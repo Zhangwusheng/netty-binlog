@@ -30,7 +30,10 @@ public class Main {
 
             ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3036).sync();
             channelFuture.channel().closeFuture().sync();
-        } finally {
+        } catch (Exception ex){
+
+        }
+        finally {
             eventLoopGroup.shutdownGracefully();
 
         }

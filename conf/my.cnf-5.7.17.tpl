@@ -5,7 +5,7 @@
 
 # CLIENT #
 port                           = 3333
-socket                         = /home/zhangwusheng/dist/mysql-5.7.17/mysql.sock
+socket                         = /usr/local/mysql/mysql.sock
 
 [mysqld]
 
@@ -13,8 +13,8 @@ socket                         = /home/zhangwusheng/dist/mysql-5.7.17/mysql.sock
 user                           = mysql
 port                           = 3333
 default-storage-engine         = InnoDB
-socket                         = /home/zhangwusheng/dist/mysql-5.7.17/mysql.sock
-pid-file                       = /home/zhangwusheng/dist/mysql-5.7.17/mysql.pid
+socket                         = /usr/local/mysql/mysql.sock
+pid-file                       = /usr/local/mysql/mysql.pid
 
 # MyISAM #
 key-buffer-size                = 128M
@@ -25,10 +25,10 @@ max-allowed-packet             = 16M
 max-connect-errors             = 1000000
 
 # DATA STORAGE #
-datadir                        = /home/zhangwusheng/dist/mysql-5.7.17/data
+datadir                        = /usr/local/mysql/data
 
 # BINARY LOGGING #
-log-bin                        = /home/zhangwusheng/dist/mysql-5.7.17/data/mysql-bin
+log-bin                        = /usr/local/mysql/data/mysql-bin
 expire-logs-days               = 14
 sync-binlog                    = 1
 
@@ -36,7 +36,7 @@ sync-binlog                    = 1
 # REPLICATION #
 skip-slave-start               = 1
 log-slave-updates              = 1
-relay-log                      = /home/zhangwusheng/dist/mysql-5.7.17/data/relay-bin
+relay-log                      = /usr/local/mysql/data/relay-bin
 slave-net-timeout              = 60
 
 # CACHES AND LIMITS #
@@ -59,10 +59,10 @@ innodb-file-per-table          = 1
 innodb-buffer-pool-size        = 2G
 
 # LOGGING #
-log-error                      = /home/zhangwusheng/dist/mysql-5.7.17/mysql-error.log
+log-error                      = /usr/local/mysql/data/mysql-error.log
 log-queries-not-using-indexes  = 1
 slow-query-log                 = 1
-slow-query-log-file            = /home/zhangwusheng/dist/mysql-5.7.17/mysql-slow.log
+slow-query-log-file            = /usr/local/mysql/data/mysql-slow.log
 
 # MYSELF #
 log-slave-updates=1    
@@ -72,13 +72,6 @@ enforce_gtid_consistency=on  #强制gtid一致性，开启后对于特定create 
 bind-address=0.0.0.0
 
 server_id=143
-#core-file
-#[mysqld_safe]
-#core-file-size  = unlimited
-
-#server_id  = ${server_id}
-## TODO ##
-#pid-file=/var/run/mariadb/mariadb.pid
 
 relay_log_info_repository = TABLE
 master_info_repository    = TABLE

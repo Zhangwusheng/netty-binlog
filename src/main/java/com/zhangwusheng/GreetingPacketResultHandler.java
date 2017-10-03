@@ -162,8 +162,8 @@ public class GreetingPacketResultHandler extends SimpleChannelInboundHandler<Byt
 			GreetingPacket greetingPacket = new GreetingPacket ();
 			greetingPacket.parse ( msg );
 			
-			String user = "root";
-			String password = "";
+			String user = "repl";
+			String password = "repl";
 			NettyAuthenticateCommand authenticateCommand =
 					new NettyAuthenticateCommand (user,password
 							,greetingPacket.getScramble ()

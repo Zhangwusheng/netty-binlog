@@ -1,0 +1,43 @@
+<configuration>
+    <property name="LOG_HOME" value="log/"/>
+
+    <charset>UTF-8</charset>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+          <encoder>
+              <pattern>[%d][%thread][%level][%logger{0}]%replace(%caller{1}){'\t|Caller.{1}0|\r\n', ''} - %msg%n</pattern>
+              <!--<pattern>[%d][%thread][%level][%logger{0}]-%msg%n</pattern>-->
+              <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/cdcload.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>[%d][%thread][%level][%logger{0}]-%msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+    </appender>
+
+    <logger name="org.apache.zookeeper">
+        <level value="ERROR" />
+    </logger>
+
+    <logger name="org.apache.kafka.common.metrics.Metrics">
+        <level value="ERROR" />
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

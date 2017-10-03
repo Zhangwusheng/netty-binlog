@@ -27,3 +27,8 @@ alter user 'root'@'127.0.0.1' identified by 'zhangwusheng';
 
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' IDENTIFIED BY 'repl';
 FLUSH PRIVILEGES;
+
+
+
+show binary logs;
+show binlog events in  'mysql-bin.000002';

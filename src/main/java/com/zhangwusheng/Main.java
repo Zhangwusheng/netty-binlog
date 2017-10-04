@@ -49,8 +49,8 @@ public class Main {
                         }
                     });
         
-            bootstrap.attr ( dbUser,"root111" );
-            bootstrap.attr ( dbPassword,"password1111" );
+            bootstrap.attr ( dbUser,"repl" );
+            bootstrap.attr ( dbPassword,"repl" );
             
             ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
             //channelFuture.isDone ();

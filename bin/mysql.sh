@@ -1,0 +1,34 @@
+mkdir -p /data2/mysql-data/5.7.18
+
+#mv /usr/local/mysql /usr/local/mysql-5.7.18
+
+ln -fs /usr/local/mysql-5.7.18 /usr/local/mysql
+ln -fs  /data2/mysql-data/5.7.18 /usr/local/mysql/data
+
+groupadd mysql
+useradd -g mysql mysql
+
+/usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --initialize --user=mysql
+
+
+root@localhost: ukR9P4d1,wri
+
+
+chown -R mysql:mysql /usr/local/mysql-5.7.18
+
+ /usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf  --user=mysql
+
+ /usr/local/mysql/bin/mysql -uroot -p -P3333 -h127.0.0.1
+
+
+alter user 'root'@'localhost' identified by 'zhangwusheng';
+alter user 'root'@'127.0.0.1' identified by 'zhangwusheng';
+
+
+GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' IDENTIFIED BY 'repl';
+FLUSH PRIVILEGES;
+
+
+
+show binary logs;
+show binlog events in  'mysql-bin.000002';

@@ -81,6 +81,26 @@ public class ByteUtil {
         return new String(str, 0, length - 1);
     }
     
+    /**
+     * Read variable-length string. Preceding packed integer indicates the length of the string.
+     */
+    public static String readLengthEncodedString(ByteBuf src) throws IOException {
+        return readString(src,readPackedInteger(src));
+    }
+    
+    /**
+     * @see
+     */
+    public static int readPackedInteger(ByteBuf src) throws IOException {
+        Number number = readVariableNumber(src);
+        if (number == null) {
+            throw new IOException("Unexpected NULL where int should have been");
+        }
+        if (number.longValue() > Integer.MAX_VALUE) {
+            throw new IOException("Stumbled upon long even though int expected");
+        }
+        return number.intValue();
+    }
     
     // 下面的函数主要用来写
     public static byte[] writeByte(byte value, int length) {

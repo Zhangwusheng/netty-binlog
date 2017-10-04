@@ -1,4 +1,4 @@
-package com.zhangwusheng;
+package com.zhangwusheng.binlog.handler;
 
 /**
  * Protocol::Handshake
@@ -124,7 +124,7 @@ package com.zhangwusheng;
  @retval 1 error
  */
 
-import com.zhangwusheng.binlog.command.AuthenticateCommand;
+import com.zhangwusheng.HandlerUtil;
 import com.zhangwusheng.binlog.command.NettyAuthenticateCommand;
 import com.zhangwusheng.binlog.network.GreetingPacket;
 import io.netty.buffer.ByteBuf;
@@ -162,8 +162,8 @@ public class GreetingPacketResultHandler extends SimpleChannelInboundHandler<Byt
 			GreetingPacket greetingPacket = new GreetingPacket ();
 			greetingPacket.parse ( msg );
 			
-			String user = "root";
-			String password = "";
+			String user = "repl";
+			String password = "repl";
 			NettyAuthenticateCommand authenticateCommand =
 					new NettyAuthenticateCommand (user,password
 							,greetingPacket.getScramble ()

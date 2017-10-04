@@ -11,11 +11,11 @@ import com.zhangwusheng.ByteUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-public class QueryCommand implements Command {
+public class NettyQueryCommand implements Command {
 	
 	private String sql = null;
 	
-	public QueryCommand ( String sql) {
+	public NettyQueryCommand ( String sql) {
 		this.sql = sql;
 	}
 	

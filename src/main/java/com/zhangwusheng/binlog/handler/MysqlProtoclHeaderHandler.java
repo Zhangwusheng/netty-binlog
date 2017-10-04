@@ -1,5 +1,7 @@
-package com.zhangwusheng;
+package com.zhangwusheng.binlog.handler;
 
+import com.zhangwusheng.ByteUtil;
+import com.zhangwusheng.HandlerUtil;
 import com.zhangwusheng.binlog.network.ErrorPacket;
 import com.zhangwusheng.binlog.network.ServerException;
 import io.netty.buffer.ByteBuf;
@@ -44,6 +46,9 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
         
         byte error = byteBuf.getByte (0);
         //看看是不是ERR_PACKT
+        
+        log.info ( "========Total Readed:"+ byteBuf.readableBytes () );
+        
         if( 0xFF == error ){
             byteBuf.skipBytes ( 1 );//把0xFF跳过去
             ErrorPacket errorPacket = new ErrorPacket (  );

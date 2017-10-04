@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.shyiko.mysql.binlog.network.protocol.command;
+package com.zhangwusheng.binlog.command;
 
 /**
  * @see <a href="http://dev.mysql.com/doc/internals/en/text-protocol.html">Text Protocol</a> for the original

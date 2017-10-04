@@ -1,4 +1,4 @@
-package com.zhangwusheng;
+package com.zhangwusheng.binlog.handler;
 
 /**
  * Protocol::Handshake
@@ -124,6 +124,8 @@ package com.zhangwusheng;
  @retval 1 error
  */
 
+import com.zhangwusheng.ByteUtil;
+import com.zhangwusheng.HandlerUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

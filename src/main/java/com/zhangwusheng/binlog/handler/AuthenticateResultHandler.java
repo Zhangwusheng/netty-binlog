@@ -1,4 +1,4 @@
-package com.zhangwusheng.binlog;
+package com.zhangwusheng.binlog.handler;
 
 /**
  * 
@@ -8,6 +8,7 @@ package com.zhangwusheng.binlog;
  */
 
 import com.zhangwusheng.HandlerUtil;
+import com.zhangwusheng.binlog.command.NettyQueryCommand;
 import com.zhangwusheng.binlog.network.EofPacket;
 import com.zhangwusheng.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;
@@ -38,26 +39,14 @@ public class AuthenticateResultHandler extends SimpleChannelInboundHandler<ByteB
 				//这里应该结束。
 			}
 			
-			// 再发送一个命令,前提是自己没有设置指定的binlogname & binlogPosition
 			{
-				// 根据需要决定是否发送fetchBinlogName&Position
-//				ConnectionAttributes myAttributes = ((MyNioSocketChannel) context.channel()).getAttributes();
-//				String name = myAttributes.getBinlogFileName().trim();
-//				long position = myAttributes.getBinlogPosition();
-//				if (null != name && name.length() > 0) {
-//					// 说明已经预设了起点
-//					// 不需要进行FetchBinlogNamePositionResultHandler
-//					context.pipeline().remove(MyConstants.FETCH_BINLOG_NAMEPOSITION_RESULT_HANDLER);
-//					// 直接跳到fetchbinlogchecksum环节
-//					new FetchBinlogChecksumCommand("show global variables like 'binlog_checksum'").write(context);
-//					LoggerUtils.debug(logger,
-//							"binlog positon specified :" + name + ":" + position + ", try to fetch checksum");
-//				} else {
-//					new FetchBinlogNamePositionCommand("show master status").write(context);
-//					LoggerUtils.debug(logger, "try to fetch binlog current name&positon");
-//				}
+				String sql ="show master status";
+//				String sql2 = "show binlog events in 'mysql-bin.000002' limit 5";
+				NettyQueryCommand queryCommand = new NettyQueryCommand ( sql );
+				
+				context.pipeline().remove(this);// 完成使命，退出历史舞台
+				context.channel ().writeAndFlush ( queryCommand.toByteBuf () );
 			}
-			context.pipeline().remove(this);// 完成使命，退出历史舞台
 		} catch (Exception e) {
 //			LoggerUtils.error(logger, e.toString());
 			throw new Exception(e);

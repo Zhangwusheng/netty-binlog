@@ -3,7 +3,10 @@ package com.zhangwusheng;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import com.zhangwusheng.binlog.AuthenticateResultHandler;
+import com.zhangwusheng.binlog.handler.AuthenticateResultHandler;
+import com.zhangwusheng.binlog.handler.GreetingPacketResultHandler;
+import com.zhangwusheng.binlog.handler.MysqlProtoclHeaderHandler;
+import com.zhangwusheng.binlog.handler.RecordsetHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -42,14 +45,14 @@ public class Main {
                             channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler () );
                             channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
                             channelPipeline.addLast ( "AuthenticateResultHandler",new AuthenticateResultHandler () );
-//                            channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
+                            channelPipeline.addLast ( "RecordsetHandler",new RecordsetHandler () );
                         }
                     });
         
             bootstrap.attr ( dbUser,"root111" );
             bootstrap.attr ( dbPassword,"password1111" );
             
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
+            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
             //channelFuture.isDone ();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception ex){
@@ -64,17 +67,34 @@ public class Main {
     
         ByteBuf byteBuf = Unpooled.buffer ( 10 );
         byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
-    
-        System.out.println ( byteBuf.readableBytes () );
         
-        byteBuf.skipBytes ( 1 );
-        byte[] test = new byte[5];
-        byteBuf.readBytes (test );
+//        byteBuf.markReaderIndex ();
+//        int start = byteBuf.readerIndex ();
+//        int last = start;
+//        while( byteBuf.getByte ( last ) != 'u')
+//            last++;
+//
+//        byteBuf.resetReaderIndex ();
+//        byte[] ttt = new byte[last-start];
+//
+//        byteBuf.readBytes ( ttt  );
+//
+//        String res1 = new String ( ttt );
+//        System.out.println (res1 );
+//        byteBuf.skipBytes ( 1 );
         
-        String s = new String ( test );
-        System.out.println ( s );
+//        System.exit ( 1 );
     
-        System.out.println ( byteBuf.readableBytes () );
+//        System.out.println ( byteBuf.readableBytes () );
+//
+//        byteBuf.skipBytes ( 1 );
+//        byte[] test = new byte[5];
+//        byteBuf.readBytes (test );
+//
+//        String s = new String ( test );
+//        System.out.println ( s );
+//
+//        System.out.println ( byteBuf.readableBytes () );
 //        System.exit ( 0 ); ;
         
     

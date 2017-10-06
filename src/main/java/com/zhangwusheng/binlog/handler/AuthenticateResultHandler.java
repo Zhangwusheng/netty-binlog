@@ -40,11 +40,11 @@ public class AuthenticateResultHandler extends SimpleChannelInboundHandler<ByteB
 			}
 			
 			{
+				context.pipeline().remove(this);// 完成使命，退出历史舞台
 				String sql ="show master status";
 //				String sql2 = "show binlog events in 'mysql-bin.000002' limit 5";
 				NettyQueryCommand queryCommand = new NettyQueryCommand ( sql );
 				
-				context.pipeline().remove(this);// 完成使命，退出历史舞台
 				context.channel ().writeAndFlush ( queryCommand.toByteBuf () );
 			}
 		} catch (Exception e) {

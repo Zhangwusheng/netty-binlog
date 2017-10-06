@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * Created by zhangwusheng on 17/10/4.
  */
 public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
-    private Logger log = LoggerFactory.getLogger ( GreetingPacketResultHandler.class );
+    private Logger log = LoggerFactory.getLogger ( RecordsetHandler.class );
     
     
     

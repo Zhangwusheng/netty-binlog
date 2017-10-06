@@ -43,6 +43,12 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
         }else if( byteBuf.readableBytes () == 0 ){
             return;
         }
+    
+        String debug = ByteBufUtil.prettyHexDump ( byteBuf );
+        log.info ( "-----------------" );
+        log.info ( debug );
+        log.info ( "-----------------" );
+    
         
         byte error = byteBuf.getByte (0);
         //看看是不是ERR_PACKT
@@ -62,13 +68,7 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
             return;
         }else{
             if( dataBuffer == null ) {
-    
-                String debug = ByteBufUtil.prettyHexDump ( byteBuf );
-                log.info ( "-----------------" );
-                log.info ( debug );
-                log.info ( "-----------------" );
-    
-    
+                
                 //读取到了至少4个字节，可以把头部信息读出来。
                 //所有的mysql协议的头三个字节都是长度，第四个字节是序列号
                 headerLength = ByteUtil.readInteger ( byteBuf, 3 );

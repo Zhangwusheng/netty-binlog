@@ -39,3 +39,8 @@ show binlog events in  'mysql-bin.000002';
 
  /usr/local/mysql/bin/mysql -urepl -p -P3333 -h127.0.0.1
 
+GRANT REPLICATION SLAVE ON *.* TO 'repl'@'localhost' IDENTIFIED BY 'repl';
+FLUSH PRIVILEGES;
+
+GRANT REPLICATION CLIENT ON *.* TO 'repl'@'localhost';
+FLUSH PRIVILEGES;

@@ -39,8 +39,14 @@ show binlog events in  'mysql-bin.000002';
 
  /usr/local/mysql/bin/mysql -urepl -p -P3333 -h127.0.0.1
 
+
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'localhost' IDENTIFIED BY 'repl';
 FLUSH PRIVILEGES;
 
 GRANT REPLICATION CLIENT ON *.* TO 'repl'@'localhost';
 FLUSH PRIVILEGES;
+
+/usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --user=mysql &
+
+tcpdump -i wlp3s0 -nn -X 'port 3333 and  host 192.168.1.105' -w mysql2.cap
+>>>>>>> c54034d37d2815abfe21dcb5daac7e347547a27b

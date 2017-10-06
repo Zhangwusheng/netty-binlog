@@ -3,6 +3,7 @@ package com.zhangwusheng.binlog.network;
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.handler.RecordsetHandler;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class ColumnDefinitionPacket implements Packet {
 //    Type: FIELD_TYPE_VAR_STRING (253)
 //    Flags: 0x0001
 //    Decimals: 0
+
     private String catalog;
     private String database;
     private String table;
@@ -41,6 +43,9 @@ public class ColumnDefinitionPacket implements Packet {
     private int columnType;//1
     private int flags;
     private int decimals;
+    
+
+    private boolean isEof = false;
 //    decimals (1) -- max shown decimal digits
 //    0x00 for integers and static strings
 //    0x1f for dynamic strings, double, float
@@ -51,6 +56,18 @@ public class ColumnDefinitionPacket implements Packet {
     
     
     public void parse ( ByteBuf msg ) {
+        
+        String debug = ByteBufUtil.prettyHexDump ( msg );
+        log.info ( debug );
+        
+        msg.markReaderIndex ();
+        if( msg.readByte ( ) == (byte)0xFE ){
+            isEof = true;
+            return;
+        }else{
+            msg.resetReaderIndex ();
+        }
+        
         catalog = ByteUtil.readLengthEncodedString ( msg );
         database = ByteUtil.readLengthEncodedString ( msg );
         table = ByteUtil.readLengthEncodedString ( msg );
@@ -65,30 +82,36 @@ public class ColumnDefinitionPacket implements Packet {
         columnType = ByteUtil.readInteger ( msg,1 );
         flags = ByteUtil.readInteger ( msg,2 );
         decimals = ByteUtil.readInteger ( msg,1 );
+        msg.skipBytes ( 2 );//Filler 00 00
         
         if( msg.readableBytes () > 0 ){
             log.error ( "Still messages in buffer!......." );
-        }else{
-            log.info ( "Success parse msg,this="+this.toString () );
+            debug = ByteBufUtil.prettyHexDump ( msg );
+            log.error ( debug );
+            
         }
         
     }
     
     @Override
     public String toString ( ) {
-        return "ColumnDefinitionPacket{" +
-                "catalog='" + catalog + '\'' +
-                ", database='" + database + '\'' +
-                ", table='" + table + '\'' +
-                ", originalTable='" + originalTable + '\'' +
-                ", name='" + name + '\'' +
-                ", originalName='" + originalName + '\'' +
-                ", nextLength=" + nextLength +
-                ", characterSet=" + CharacterSetUtil.getCharacterSetStringById ( characterSet ) +
-                ", maxColumnLength=" + maxColumnLength +
-                ", columnType=" + columnType +
-                ", flags=" + flags +
-                ", decimals=" + decimals +
-                '}';
+        if ( isEof ) {
+            return "ColumnDefinitionPacket{EOF}";
+        } else {
+            return "ColumnDefinitionPacket{" +
+                    "catalog='" + catalog + '\'' +
+                    ", database='" + database + '\'' +
+                    ", table='" + table + '\'' +
+                    ", originalTable='" + originalTable + '\'' +
+                    ", name='" + name + '\'' +
+                    ", originalName='" + originalName + '\'' +
+                    ", nextLength=" + nextLength +
+                    ", characterSet=" + CharacterSetUtil.getCharacterSetStringById ( characterSet ) +
+                    ", maxColumnLength=" + maxColumnLength +
+                    ", columnType=" + columnType +
+                    ", flags=" + flags +
+                    ", decimals=" + decimals +
+                    '}';
+        }
     }
 }

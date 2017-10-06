@@ -159,26 +159,26 @@ public class GreetingPacket  implements Packet {
 		log.info ( "msg.readableBytes="+msg.readableBytes () );
 		
 		protocolVersion = ByteUtil.readUnsignedByte(msg);// 一个字节
-		log.info("mysql protocol version: " + protocolVersion);
+//		log.info("mysql protocol version: " + protocolVersion);
 		
 		serverVersion = ByteUtil.readZeroTerminatedString(msg);
-		log.info("serverVersion:" + serverVersion);
+//		log.info("serverVersion:" + serverVersion);
 		
 		connectionId = ByteUtil.readUnsignedLong(msg, 4);
-		log.info("threadId: " + connectionId);
+//		log.info("threadId: " + connectionId);
 		
 		//这里能读对，是因为8个字节后面正好是filler \0
 		scramblePrefix = ByteUtil.readZeroTerminatedString(msg);
-		log.info("scramblePrefix: " + scramblePrefix);
+//		log.info("scramblePrefix: " + scramblePrefix);
 		
 		serverCapabilities = ByteUtil.readUnsignedInt(msg, 2);
-		log.info( "serverCapabilities:" + serverCapabilities);
+//		log.info( "serverCapabilities:" + serverCapabilities);
 		
 		serverCollation = ByteUtil.readUnsignedByte(msg);
-		log.info("serverCollation: " + serverCollation);
+//		log.info("serverCollation: " + serverCollation);
 		
 		 serverStatus = ByteUtil.readUnsignedInt(msg, 2);
-		log.info("serverStatus: " + serverStatus);
+//		log.info("serverStatus: " + serverStatus);
 		
 		msg.skipBytes(13);
 
@@ -211,13 +211,13 @@ public class GreetingPacket  implements Packet {
 		
 		scrambleSuffix = ByteUtil.readZeroTerminatedString(msg);
 		scramble = scramblePrefix + scrambleSuffix;
-		log.info ( "scramble: " + scramble );
+//		log.info ( "scramble: " + scramble );
 		
 		if( msg.readableBytes () > 0 ){
 			// serverCapabilities & ( CLIENT_PLUGIN_AUTH 这里是为true的
 			//一般是"mysql_native_password"
 			pluginData = ByteUtil.readZeroTerminatedString ( msg );
-			log.info ("pluginData="+pluginData  );
+//			log.info ("pluginData="+pluginData  );
 		}
 	}
 	
@@ -225,9 +225,9 @@ public class GreetingPacket  implements Packet {
 		return serverCollation;
 	}
 	
-	public void setServerCollation ( int serverCollation ) {
-		this.serverCollation = serverCollation;
-	}
+//	public void setServerCollation ( int serverCollation ) {
+//		this.serverCollation = serverCollation;
+//	}
 	
 	public String getScramble ( ) {
 		return scramble;

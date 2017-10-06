@@ -128,6 +128,7 @@ import com.zhangwusheng.HandlerUtil;
 import com.zhangwusheng.binlog.command.NettyAuthenticateCommand;
 import com.zhangwusheng.binlog.network.GreetingPacket;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.AttributeKey;
@@ -159,8 +160,17 @@ public class GreetingPacketResultHandler extends SimpleChannelInboundHandler<Byt
 				return;
 			}
 			
+			String debugString = ByteBufUtil.prettyHexDump ( msg );
+			log.info ( "GreetingPacketResultHandler==========" );
+			log.info ( debugString );
+			log.info ( "GreetingPacketResultHandler==========" );
+			
 			GreetingPacket greetingPacket = new GreetingPacket ();
 			greetingPacket.parse ( msg );
+			
+			log.info ( "=====================" );
+			log.info ( greetingPacket.toString () );
+			log.info ( "=====================" );
 			
 			String user = "repl";
 			String password = "repl";

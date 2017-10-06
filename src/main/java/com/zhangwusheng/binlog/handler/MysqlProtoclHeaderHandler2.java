@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by zhangwusheng on 17/10/1.
  */
-public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class MysqlProtoclHeaderHandler2 extends SimpleChannelInboundHandler<ByteBuf> {
     
-    private Logger log = LoggerFactory.getLogger ( MysqlProtoclHeaderHandler.class );
+    private Logger log = LoggerFactory.getLogger ( MysqlProtoclHeaderHandler2.class );
     
     private int headerLength = 0;
     private int sequence = 0;
@@ -67,41 +67,45 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
             log.info ( "byteBuf.readableBytes () < 4" );
             return;
         }else{
-            if( dataBuffer == null ) {
-                
-                //读取到了至少4个字节，可以把头部信息读出来。
-                //所有的mysql协议的头三个字节都是长度，第四个字节是序列号
+            
+            //这里有可能一次性读过来很多Packet的数据，所以要循环判断
+            while( true ){
+                if( byteBuf.readableBytes () < 4 ){
+                    log.info ( "byteBuf.readableBytes () < 4:"+byteBuf.readableBytes () );
+                    return;
+                }
+    
+                byteBuf.markReaderIndex ();
                 headerLength = ByteUtil.readInteger ( byteBuf, 3 );
                 sequence = ByteUtil.readInteger ( byteBuf, 1 );
-    
-                log.info ( "+++++headerLength="+headerLength );
-                dataBuffer = Unpooled.buffer ( headerLength );
                 
-                getPacketData ( byteBuf );
-                onPacketDataReaded( channelHandlerContext);
-                //如果
-            }else{
-                getPacketData( byteBuf );
-                onPacketDataReaded( channelHandlerContext);
+                
+                if( byteBuf.readableBytes () < headerLength)
+                {
+                    byteBuf.resetReaderIndex ();
+                    return;
+                }
+                
+                ByteBuf newBuff = Unpooled.buffer ( headerLength );
+                byteBuf.readBytes ( newBuff,headerLength );
+    
+                onFullPacketDataReaded(channelHandlerContext, newBuff );
             }
+            
         }
         
     }
     
     private void onFullPacketDataReaded(ChannelHandlerContext channelHandlerContext,ByteBuf buffer){
-//        if(dataBuffer.readableBytes () == this.headerLength){
-            
+
             String debug = ByteBufUtil.prettyHexDump ( buffer );
             log.info ( "-----------------" );
             log.info ( debug );
             log.info ( "-----------------" );
             
-//            log.info ( "dataBuffer.readableBytes () == this.headerLength="+this.headerLength );
+
             channelHandlerContext.fireChannelRead ( buffer );
-//            dataBuffer = null;
-//            headerLength = 0;
-//            sequence = 0;
-//        }
+
     }
     
     private void onPacketDataReaded(ChannelHandlerContext channelHandlerContext){
@@ -123,6 +127,7 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
     private void getPacketData ( ByteBuf byteBuf ) {
         byte[] bytes = null;
         int length = 0;
+        
         if (byteBuf.hasArray()) {// 支持数组方式
             log.info ( "has array" );
             bytes = byteBuf.array();

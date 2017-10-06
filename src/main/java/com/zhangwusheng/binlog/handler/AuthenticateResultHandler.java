@@ -12,6 +12,7 @@ import com.zhangwusheng.binlog.command.NettyQueryCommand;
 import com.zhangwusheng.binlog.network.EofPacket;
 import com.zhangwusheng.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
@@ -25,6 +26,12 @@ public class AuthenticateResultHandler extends SimpleChannelInboundHandler<ByteB
 	protected void channelRead0( ChannelHandlerContext context, ByteBuf msg) throws Exception {
 		try {
 			log.info ( "writeAndFlush authenticateCommand,msg.readableBytes="+msg.readableBytes () );
+			
+			String debugString = ByteBufUtil.prettyHexDump ( msg );
+			log.info ( "AuthenticateResultHandler==========" );
+			log.info ( debugString );
+			log.info ( "AuthenticateResultHandler==========" );
+			
 			
 			if( msg.getByte ( 0 ) == 0x00) {
 				OKPacket okPacket = new OKPacket ( );

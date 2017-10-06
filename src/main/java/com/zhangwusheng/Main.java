@@ -3,10 +3,7 @@ package com.zhangwusheng;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import com.zhangwusheng.binlog.handler.AuthenticateResultHandler;
-import com.zhangwusheng.binlog.handler.GreetingPacketResultHandler;
-import com.zhangwusheng.binlog.handler.MysqlProtoclHeaderHandler;
-import com.zhangwusheng.binlog.handler.RecordsetHandler;
+import com.zhangwusheng.binlog.handler.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -26,11 +23,11 @@ public class Main {
     
     public void test()
     {
-
-    
+        
+        
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-    
-    
+        
+        
         Bootstrap bootstrap = new Bootstrap();
         AttributeKey<String> dbUser =  AttributeKey.valueOf ("db.user");
         AttributeKey<String> dbPassword =  AttributeKey.valueOf ("db.password");
@@ -42,33 +39,61 @@ public class Main {
                     .handler( new ChannelInitializer<SocketChannel>(){
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline channelPipeline = ch.pipeline();
-                            channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler () );
+                            channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler2 () );
                             channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
                             channelPipeline.addLast ( "AuthenticateResultHandler",new AuthenticateResultHandler () );
                             channelPipeline.addLast ( "RecordsetHandler",new RecordsetHandler () );
                         }
                     });
-        
+            
             bootstrap.attr ( dbUser,"repl" );
             bootstrap.attr ( dbPassword,"repl" );
-    
+            
             ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
 //            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
             //channelFuture.isDone ();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception ex){
-        
+            
         }
         finally {
             eventLoopGroup.shutdownGracefully();
-        
+            
         }
     }
     public static void main(String[] args) {
         
         ByteBuf byteBuf = Unpooled.buffer ( 10 );
-        byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
+        byteBuf.writeBytes ( "Zhangwush".getBytes () );
         
+        int length = 5;
+        
+        int readIndex = 0;
+        int writeIndex = readIndex+5;
+        int end = byteBuf.readableBytes ();
+        
+        while ( true ){
+            if( byteBuf.readableBytes () < 5){
+                break;
+            }
+            
+            
+            byte[] sss = new byte[5];
+            byteBuf.readBytes ( sss );
+            String sr = new String (sss);
+            System.out.println (sr );
+            
+            readIndex = writeIndex;
+            writeIndex+=5;
+            
+            if(writeIndex > end)
+                writeIndex = end;
+            byteBuf.setIndex ( readIndex,writeIndex );
+            
+        }
+
+//        System.exit ( 0 );
+
 //        byteBuf.markReaderIndex ();
 //        int start = byteBuf.readerIndex ();
 //        int last = start;
@@ -83,9 +108,9 @@ public class Main {
 //        String res1 = new String ( ttt );
 //        System.out.println (res1 );
 //        byteBuf.skipBytes ( 1 );
-        
+
 //        System.exit ( 1 );
-    
+
 //        System.out.println ( byteBuf.readableBytes () );
 //
 //        byteBuf.skipBytes ( 1 );
@@ -98,10 +123,10 @@ public class Main {
 //        System.out.println ( byteBuf.readableBytes () );
 //        System.exit ( 0 ); ;
         
-    
-         String CDC_HOME_PROPERTY = "cdc.home.dir";
-         String CDCHome = System.getProperty ( CDC_HOME_PROPERTY, System.getenv ( "CDC_HOME" ) );
-    
+        
+        String CDC_HOME_PROPERTY = "cdc.home.dir";
+        String CDCHome = System.getProperty ( CDC_HOME_PROPERTY, System.getenv ( "CDC_HOME" ) );
+        
         LoggerContext lc = ( LoggerContext ) LoggerFactory.getILoggerFactory ( );
         JoranConfigurator configurator = new JoranConfigurator ( );
         configurator.setContext ( lc );
@@ -113,11 +138,11 @@ public class Main {
             e.printStackTrace ( );
             System.exit ( 1 );
         }
-    
-    
+        
+        
         System.out.println(Main.class.getName());
         
-    new Main().test ();
+        new Main().test ();
         
     }
 }

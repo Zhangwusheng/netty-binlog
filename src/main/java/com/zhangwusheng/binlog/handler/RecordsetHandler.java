@@ -2,6 +2,7 @@ package com.zhangwusheng.binlog.handler;
 
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.network.ColumnDefinitionPacket;
+import com.zhangwusheng.binlog.network.RowPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,8 +20,7 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
     {
         COLUMNS_COUNT,
         COLUMNS_NAMES,
-        ROWS_VALUES,
-        END
+        ROWS_VALUES
     }
     
     private State currentState = State.COLUMNS_COUNT;
@@ -30,31 +30,53 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
     
     
     protected void channelRead0 ( ChannelHandlerContext ctx, ByteBuf msg ) throws Exception {
+    
         String debugString = ByteBufUtil.prettyHexDump ( msg );
+        log.info ( "RecordsetHandler==========" );
+        log.info ( debugString );
+        log.info ( "RecordsetHandler==========" );
+    
         
         if( currentState == State.COLUMNS_COUNT ){
             columnCount = ByteUtil.readInteger ( msg,msg.readableBytes () );
             log.info ( "Total Columns = "+columnCount );
-    
+            
             currentState = State.COLUMNS_NAMES;
             currentColumnNameIndex = 0;
         }else if(currentState == State.COLUMNS_NAMES  ){
-            if(msg.getByte ( 0 ) == 0xFE){
+            if(msg.getByte ( 0 ) == (byte)0xFE){
+                log.info ( "Column Ended EOF" );
 //            if( currentColumnNameIndex == columnCount){
+                log.info ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
                 currentState = State.ROWS_VALUES;
                 currentColumnNameIndex = 0;
-                log.info ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
             }
             else {
                 ColumnDefinitionPacket columnDefinitionPacket = new ColumnDefinitionPacket ();
                 columnDefinitionPacket.parse ( msg );
                 currentColumnNameIndex++;
+                
+                
+                log.info ( "Success parse msg,this="+columnDefinitionPacket.toString () );
+                
+                
             }
         }else if( currentState == State.ROWS_VALUES){
+            if(msg.getByte ( 0 ) == (byte)0xFE){
+                currentState = State.COLUMNS_COUNT;
+                currentColumnNameIndex = 0;
+                
+                log.info ( "Row Parse Ended........." );
+            }
+            else {
+                RowPacket rowPacket = new RowPacket ();
+                rowPacket.parse ( msg );
+                
+                log.info ( rowPacket.toString () );
+                currentColumnNameIndex++;
+            }
             
         }
         
-        
-        log.info ( debugString );
     }
 }

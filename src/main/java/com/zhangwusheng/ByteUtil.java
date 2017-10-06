@@ -84,21 +84,21 @@ public class ByteUtil {
     /**
      * Read variable-length string. Preceding packed integer indicates the length of the string.
      */
-    public static String readLengthEncodedString(ByteBuf src) throws IOException {
+    public static String readLengthEncodedString(ByteBuf src)  {
         return readString(src,readPackedInteger(src));
     }
     
     /**
      * @see
      */
-    public static int readPackedInteger(ByteBuf src) throws IOException {
+    public static int readPackedInteger(ByteBuf src)  {
         Number number = readVariableNumber(src);
-        if (number == null) {
-            throw new IOException("Unexpected NULL where int should have been");
-        }
-        if (number.longValue() > Integer.MAX_VALUE) {
-            throw new IOException("Stumbled upon long even though int expected");
-        }
+//        if (number == null) {
+//            throw new IOException("Unexpected NULL where int should have been");
+//        }
+//        if (number.longValue() > Integer.MAX_VALUE) {
+//            throw new IOException("Stumbled upon long even though int expected");
+//        }
         return number.intValue();
     }
     

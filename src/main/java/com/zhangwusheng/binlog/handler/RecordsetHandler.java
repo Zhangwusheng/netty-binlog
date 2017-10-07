@@ -31,23 +31,22 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
     
     protected void channelRead0 ( ChannelHandlerContext ctx, ByteBuf msg ) throws Exception {
     
-        String debugString = ByteBufUtil.prettyHexDump ( msg );
-        log.info ( "RecordsetHandler==========" );
-        log.info ( debugString );
-        log.info ( "RecordsetHandler==========" );
+//        String debugString = ByteBufUtil.prettyHexDump ( msg );
+//        log.info ( "RecordsetHandler==========" );
+//        log.info ( debugString );
+//        log.info ( "RecordsetHandler==========" );
     
         
         if( currentState == State.COLUMNS_COUNT ){
             columnCount = ByteUtil.readInteger ( msg,msg.readableBytes () );
-            log.error ( "Total Columns = "+columnCount );
+//            log.error ( "Total Columns = "+columnCount );
             
             currentState = State.COLUMNS_NAMES;
             currentColumnNameIndex = 0;
         }else if(currentState == State.COLUMNS_NAMES  ){
             if(msg.getByte ( 0 ) == (byte)0xFE){
-                log.error ( "Column Ended EOF" );
-//            if( currentColumnNameIndex == columnCount){
-                log.error ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
+//                log.error ( "Column Ended EOF" );
+//                log.error ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
                 currentState = State.ROWS_VALUES;
                 currentColumnNameIndex = 0;
             }
@@ -56,27 +55,22 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
                 columnDefinitionPacket.parse ( msg );
                 currentColumnNameIndex++;
                 
-                
-                log.error ( "Success parse msg,column="+columnDefinitionPacket.toString () );
-                
-                
+                log.info ( columnDefinitionPacket.toString () );
             }
         }else if( currentState == State.ROWS_VALUES){
             if(msg.getByte ( 0 ) == (byte)0xFE){
                 currentState = State.COLUMNS_COUNT;
 //                currentColumnNameIndex = 0;
                 
-                log.error ( "Row Parse Ended........." );
+//                log.error ( "Row Parse Ended........." );
             }
             else {
                 RowPacket rowPacket = new RowPacket ();
                 rowPacket.parse ( msg );
                 
-                log.error ( rowPacket.toString () );
+                log.info ( rowPacket.toString () );
 //                currentColumnNameIndex++;
             }
-            
         }
-        
     }
 }

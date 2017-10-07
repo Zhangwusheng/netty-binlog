@@ -37,9 +37,9 @@ public class AuthenticateResultHandler extends SimpleChannelInboundHandler<ByteB
 				OKPacket okPacket = new OKPacket ( );
 				okPacket.parse ( msg );
 				
-				log.info ( "------------------------" );
-				log.info ( okPacket.toString () );
-				log.info ( "------------------------" );
+//				log.info ( "------------------------" );
+//				log.info ( okPacket.toString () );
+//				log.info ( "------------------------" );
 			}else if( msg.getByte ( 0 ) == 0xFE) {
 				EofPacket eofPacket = new EofPacket ();
 				eofPacket.parse ( msg );
@@ -49,7 +49,7 @@ public class AuthenticateResultHandler extends SimpleChannelInboundHandler<ByteB
 			{
 				context.pipeline().remove(this);// 完成使命，退出历史舞台
 //				String sql ="show master status";
-				String sql = "show binlog events in 'mysql-bin.000002' limit 5";
+				String sql = "show binlog events in 'mysql-bin.000002' limit 15";
 				NettyQueryCommand queryCommand = new NettyQueryCommand ( sql );
 				
 				context.channel ().writeAndFlush ( queryCommand.toByteBuf () );

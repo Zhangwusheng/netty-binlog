@@ -40,7 +40,7 @@ public class Main {
                     .handler( new ChannelInitializer<SocketChannel>(){
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline channelPipeline = ch.pipeline();
-                            channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler2 () );
+                            channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler () );
                             channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
                             channelPipeline.addLast ( "AuthenticateResultHandler",new AuthenticateResultHandler () );
                             channelPipeline.addLast ( "RecordsetHandler",new RecordsetHandler () );

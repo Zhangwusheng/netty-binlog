@@ -57,8 +57,8 @@ public class ColumnDefinitionPacket implements Packet {
     
     public void parse ( ByteBuf msg ) {
         
-        String debug = ByteBufUtil.prettyHexDump ( msg );
-        log.info ( debug );
+//        String debug = ByteBufUtil.prettyHexDump ( msg );
+//        log.info ( debug );
         
         msg.markReaderIndex ();
         if( msg.readByte ( ) == (byte)0xFE ){
@@ -88,8 +88,8 @@ public class ColumnDefinitionPacket implements Packet {
         
         if( msg.readableBytes () > 0 ){
             log.error ( "Still messages in buffer!......." );
-            debug = ByteBufUtil.prettyHexDump ( msg );
-            log.error ( debug );
+//            debug = ByteBufUtil.prettyHexDump ( msg );
+//            log.error ( debug );
             
         }
         

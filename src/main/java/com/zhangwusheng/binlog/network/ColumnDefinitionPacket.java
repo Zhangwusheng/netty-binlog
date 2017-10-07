@@ -63,6 +63,8 @@ public class ColumnDefinitionPacket implements Packet {
         msg.markReaderIndex ();
         if( msg.readByte ( ) == (byte)0xFE ){
             isEof = true;
+            msg.skipBytes ( 4 );
+            //这里一共是5个字节，已经读取了一个FE，跳过4个
             return;
         }else{
             msg.resetReaderIndex ();

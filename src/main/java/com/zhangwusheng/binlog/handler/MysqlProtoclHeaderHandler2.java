@@ -6,6 +6,7 @@ import com.zhangwusheng.binlog.network.ErrorPacket;
 import com.zhangwusheng.binlog.network.ServerException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -21,11 +22,12 @@ public class MysqlProtoclHeaderHandler2 extends SimpleChannelInboundHandler<Byte
     
     private int headerLength = 0;
     private int sequence = 0;
-    private ByteBuf dataBuffer = null;
+    private ByteBuf dataLeft = null;
+    
     @Override
     protected void channelRead0 ( ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf ) throws Exception {
     
-        log.info ( "+++++++MysqlProtoclHeaderHandler.channelRead0 called" );
+//        log.info ( "+++++++MysqlProtoclHeaderHandler.channelRead0 called" );
         
         
         /****
@@ -44,16 +46,16 @@ public class MysqlProtoclHeaderHandler2 extends SimpleChannelInboundHandler<Byte
             return;
         }
     
-        String debugString = ByteBufUtil.prettyHexDump ( byteBuf );
-        log.info ( "MysqlProtoclHeaderHandler==========" );
-        log.info ( debugString );
-        log.info ( "MysqlProtoclHeaderHandler==========" );
+//        String debugString = ByteBufUtil.prettyHexDump ( byteBuf );
+//        log.info ( "MysqlProtoclHeaderHandler==========" );
+//        log.info ( debugString );
+//        log.info ( "MysqlProtoclHeaderHandler==========" );
     
         
         byte error = byteBuf.getByte (0);
         //看看是不是ERR_PACKT
         
-        log.info ( "========Total Readed:"+ byteBuf.readableBytes () );
+//        log.info ( "========Total Readed:"+ byteBuf.readableBytes () );
         
         if( 0xFF == error ){
             byteBuf.skipBytes ( 1 );//把0xFF跳过去
@@ -67,33 +69,46 @@ public class MysqlProtoclHeaderHandler2 extends SimpleChannelInboundHandler<Byte
             log.info ( "byteBuf.readableBytes () < 4" );
             return;
         }else{
+            //首先把剩下的数据和读取到的数据合并起来.
+            CompositeByteBuf compositeByteBuf = Unpooled.compositeBuffer ();
+            if( dataLeft != null ){
+                compositeByteBuf.addComponent ( true,dataLeft );
+            }
+            compositeByteBuf.addComponent ( true,byteBuf );
             
             //这里有可能一次性读过来很多Packet的数据，所以要循环判断
             while( true ){
-                if( byteBuf.readableBytes () < 4 ){
-                    log.info ( "byteBuf.readableBytes () < 4:"+byteBuf.readableBytes () );
+                if( compositeByteBuf.readableBytes () < 4 ){
+                    if( dataLeft != null ){
+                        dataLeft.release ();
+                    }
+                    dataLeft = compositeByteBuf.copy ();
+                    log.info ( "byteBuf.readableBytes () < 4:"+compositeByteBuf.readableBytes () );
                     return;
                 }
     
-                byteBuf.markReaderIndex ();
-                headerLength = ByteUtil.readInteger ( byteBuf, 3 );
-                sequence = ByteUtil.readInteger ( byteBuf, 1 );
-                
-                
-                if( byteBuf.readableBytes () < headerLength)
+                compositeByteBuf.markReaderIndex ();
+                headerLength = ByteUtil.readInteger ( compositeByteBuf, 3 );
+                sequence = ByteUtil.readInteger ( compositeByteBuf, 1 );
+    
+    
+                log.info ( "readableBytes="+compositeByteBuf.readableBytes ()+",headerLength="+headerLength );
+                if( compositeByteBuf.readableBytes () < headerLength)
                 {
-                    byteBuf.resetReaderIndex ();
+                    compositeByteBuf.resetReaderIndex ();
+                    if( dataLeft != null ){
+                        dataLeft.release ();
+                    }
+                    dataLeft = compositeByteBuf.copy ();
                     return;
                 }
                 
                 ByteBuf newBuff = Unpooled.buffer ( headerLength );
-                byteBuf.readBytes ( newBuff,headerLength );
+                compositeByteBuf.readBytes ( newBuff,headerLength );
     
                 onFullPacketDataReaded(channelHandlerContext, newBuff );
             }
-            
         }
-        
     }
     
     private void onFullPacketDataReaded(ChannelHandlerContext channelHandlerContext,ByteBuf buffer){
@@ -102,55 +117,20 @@ public class MysqlProtoclHeaderHandler2 extends SimpleChannelInboundHandler<Byte
             log.info ( "-----------------" );
             log.info ( debug );
             log.info ( "-----------------" );
-            
-
+        
             channelHandlerContext.fireChannelRead ( buffer );
 
     }
     
-    private void onPacketDataReaded(ChannelHandlerContext channelHandlerContext){
-        if(dataBuffer.readableBytes () == this.headerLength){
-    
-            String debug = ByteBufUtil.prettyHexDump ( dataBuffer );
-            log.info ( "-----------------" );
-            log.info ( debug );
-            log.info ( "-----------------" );
-            
-            log.info ( "dataBuffer.readableBytes () == this.headerLength="+this.headerLength );
-            channelHandlerContext.fireChannelRead ( dataBuffer );
-            dataBuffer = null;
-            headerLength = 0;
-            sequence = 0;
-        }
-    }
-    
-    private void getPacketData ( ByteBuf byteBuf ) {
-        byte[] bytes = null;
-        int length = 0;
-        
-        if (byteBuf.hasArray()) {// 支持数组方式
-            log.info ( "has array" );
-            bytes = byteBuf.array();
-            length = bytes.length;
-        } else {// 不支持数组方式
-            length = byteBuf.readableBytes();
-            bytes = new byte[length];
-            byteBuf.readBytes (bytes);
-        }
-        
-        dataBuffer.writeBytes ( bytes );
-    }
-    
     @Override
     public void exceptionCaught ( ChannelHandlerContext ctx, Throwable cause ) throws Exception {
-//        super.exceptionCaught ( ctx, cause );
+
         log.error ( cause.getStackTrace ().toString () );
         HandlerUtil.cleanChannelContext ( ctx, cause );
     }
     
     @Override
     public void channelInactive ( ChannelHandlerContext ctx ) throws Exception {
-//        super.channelInactive ( ctx );
         log.info ( "MysqlProtoclHeaderHandler.channelInactive Called" );
         HandlerUtil.cleanChannelContext ( ctx );
     }

@@ -39,15 +39,15 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
         
         if( currentState == State.COLUMNS_COUNT ){
             columnCount = ByteUtil.readInteger ( msg,msg.readableBytes () );
-            log.info ( "Total Columns = "+columnCount );
+            log.error ( "Total Columns = "+columnCount );
             
             currentState = State.COLUMNS_NAMES;
             currentColumnNameIndex = 0;
         }else if(currentState == State.COLUMNS_NAMES  ){
             if(msg.getByte ( 0 ) == (byte)0xFE){
-                log.info ( "Column Ended EOF" );
+                log.error ( "Column Ended EOF" );
 //            if( currentColumnNameIndex == columnCount){
-                log.info ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
+                log.error ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
                 currentState = State.ROWS_VALUES;
                 currentColumnNameIndex = 0;
             }
@@ -57,23 +57,23 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
                 currentColumnNameIndex++;
                 
                 
-                log.info ( "Success parse msg,this="+columnDefinitionPacket.toString () );
+                log.error ( "Success parse msg,column="+columnDefinitionPacket.toString () );
                 
                 
             }
         }else if( currentState == State.ROWS_VALUES){
             if(msg.getByte ( 0 ) == (byte)0xFE){
                 currentState = State.COLUMNS_COUNT;
-                currentColumnNameIndex = 0;
+//                currentColumnNameIndex = 0;
                 
-                log.info ( "Row Parse Ended........." );
+                log.error ( "Row Parse Ended........." );
             }
             else {
                 RowPacket rowPacket = new RowPacket ();
                 rowPacket.parse ( msg );
                 
-                log.info ( rowPacket.toString () );
-                currentColumnNameIndex++;
+                log.error ( rowPacket.toString () );
+//                currentColumnNameIndex++;
             }
             
         }

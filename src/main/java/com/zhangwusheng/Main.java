@@ -6,6 +6,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import com.zhangwusheng.binlog.handler.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -64,7 +65,41 @@ public class Main {
     public static void main(String[] args) {
         
         ByteBuf byteBuf = Unpooled.buffer ( 10 );
-        byteBuf.writeBytes ( "Zhangwush".getBytes () );
+        byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
+    
+        byteBuf.readByte ();
+        byteBuf.readByte ();
+        byteBuf.readByte ();
+        byteBuf.readByte ();
+        byteBuf.readByte ();
+        
+        ByteBuf left = byteBuf.copy ();
+    
+        System.out.println ( "HH:"+byteBuf.readableBytes () );
+        System.out.println ( "Left:"+byteBuf.readableBytes () );
+    
+        ByteBuf byteBuf2 = Unpooled.buffer ( 10 );
+    
+        
+        byteBuf2.writeBytes ( "andChenlingling".getBytes () );
+    
+    
+        System.out.println ( "byteBuf2:"+byteBuf2.readableBytes () );
+    
+        CompositeByteBuf compositeByteBuf = Unpooled.compositeBuffer ();
+        compositeByteBuf.addComponent (true, byteBuf );
+        compositeByteBuf.addComponent (true, byteBuf2 );
+//        compositeByteBuf.consolidate ();
+//        compositeByteBuf.
+        
+        int nn = compositeByteBuf.readableBytes ();
+        
+        byte[] bbb = new byte[nn];
+        compositeByteBuf.readBytes ( bbb );
+        String sss2 = new String ( bbb );
+        System.out.println ( "SSS2:"+sss2 );
+        
+//        System.exit ( 0 );
         
         int length = 5;
         

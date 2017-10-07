@@ -107,7 +107,15 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
                 compositeByteBuf.readBytes ( newBuff,headerLength );
                 onFullPacketDataReaded(channelHandlerContext, newBuff );
 
-//                ByteBuf payload = compositeByteBuf.readSlice ( headerLength );
+//                String debug = ByteBufUtil.prettyHexDump ( newBuff );
+//                log.info ( debug );
+//
+//                ByteBuf payload = compositeByteBuf.slice (compositeByteBuf.readerIndex (), headerLength );
+//                String debug = ByteBufUtil.prettyHexDump ( payload );
+//                log.info ( debug );
+//
+//                payload.retain ();
+//
 //                onFullPacketDataReaded(channelHandlerContext, payload );
             }
         }
@@ -127,7 +135,7 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
     @Override
     public void exceptionCaught ( ChannelHandlerContext ctx, Throwable cause ) throws Exception {
 
-        log.error ( cause.getStackTrace ().toString () );
+        log.error ( cause.getMessage () );
         HandlerUtil.cleanChannelContext ( ctx, cause );
     }
     

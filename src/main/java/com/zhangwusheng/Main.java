@@ -6,6 +6,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import com.zhangwusheng.binlog.handler.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -43,7 +44,9 @@ public class Main {
                             channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler () );
                             channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
                             channelPipeline.addLast ( "AuthenticateResultHandler",new AuthenticateResultHandler () );
-                            channelPipeline.addLast ( "RecordsetHandler",new RecordsetHandler () );
+                            channelPipeline.addLast ( "ShowMasterStatusHandler",new ShowMasterStatusHandler () );
+                            channelPipeline.addLast ( "FetchBinlogChecksumHandler",new FetchBinlogChecksumHandler () );
+                            channelPipeline.addLast ( "SetMasterChecksumHandler",new SetMasterBinlogChecksumHandler () );
                         }
                     });
             
@@ -62,102 +65,28 @@ public class Main {
             
         }
     }
+    
     public static void main(String[] args) {
-        
+    
         ByteBuf byteBuf = Unpooled.buffer ( 10 );
         byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
-    
-        byteBuf.readByte ();
-        byteBuf.readByte ();
-        byteBuf.readByte ();
-        byteBuf.readByte ();
-        byteBuf.readByte ();
-        
-        ByteBuf left = byteBuf.copy ();
-    
-        System.out.println ( "HH:"+byteBuf.readableBytes () );
-        System.out.println ( "Left:"+byteBuf.readableBytes () );
-    
         ByteBuf byteBuf2 = Unpooled.buffer ( 10 );
-    
-        
-        byteBuf2.writeBytes ( "andChenlingling".getBytes () );
-    
-    
-        System.out.println ( "byteBuf2:"+byteBuf2.readableBytes () );
+        byteBuf2.writeBytes ( "Chenlingling".getBytes () );
     
         CompositeByteBuf compositeByteBuf = Unpooled.compositeBuffer ();
-        compositeByteBuf.addComponent (true, byteBuf );
-        compositeByteBuf.addComponent (true, byteBuf2 );
-//        compositeByteBuf.consolidate ();
-//        compositeByteBuf.
+        compositeByteBuf.addComponent ( true,byteBuf );
+        compositeByteBuf.addComponent ( true,byteBuf2 );
+ 
+        ByteBuf b2 = compositeByteBuf.readSlice ( 5 );
         
-        int nn = compositeByteBuf.readableBytes ();
-        
-        byte[] bbb = new byte[nn];
-        compositeByteBuf.readBytes ( bbb );
-        String sss2 = new String ( bbb );
-        System.out.println ( "SSS2:"+sss2 );
+        String debug = ByteBufUtil.prettyHexDump ( b2 );
+        System.out.println (debug );
+    
+        debug = ByteBufUtil.prettyHexDump ( compositeByteBuf );
+        System.out.println (debug );
         
 //        System.exit ( 0 );
-        
-        int length = 5;
-        
-        int readIndex = 0;
-        int writeIndex = readIndex+5;
-        int end = byteBuf.readableBytes ();
-        
-        while ( true ){
-            if( byteBuf.readableBytes () < 5){
-                break;
-            }
-            
-            
-            byte[] sss = new byte[5];
-            byteBuf.readBytes ( sss );
-            String sr = new String (sss);
-            System.out.println (sr );
-            
-            readIndex = writeIndex;
-            writeIndex+=5;
-            
-            if(writeIndex > end)
-                writeIndex = end;
-            byteBuf.setIndex ( readIndex,writeIndex );
-            
-        }
-
-//        System.exit ( 0 );
-
-//        byteBuf.markReaderIndex ();
-//        int start = byteBuf.readerIndex ();
-//        int last = start;
-//        while( byteBuf.getByte ( last ) != 'u')
-//            last++;
-//
-//        byteBuf.resetReaderIndex ();
-//        byte[] ttt = new byte[last-start];
-//
-//        byteBuf.readBytes ( ttt  );
-//
-//        String res1 = new String ( ttt );
-//        System.out.println (res1 );
-//        byteBuf.skipBytes ( 1 );
-
-//        System.exit ( 1 );
-
-//        System.out.println ( byteBuf.readableBytes () );
-//
-//        byteBuf.skipBytes ( 1 );
-//        byte[] test = new byte[5];
-//        byteBuf.readBytes (test );
-//
-//        String s = new String ( test );
-//        System.out.println ( s );
-//
-//        System.out.println ( byteBuf.readableBytes () );
-//        System.exit ( 0 ); ;
-        
+ 
         
         String CDC_HOME_PROPERTY = "cdc.home.dir";
         String CDCHome = System.getProperty ( CDC_HOME_PROPERTY, System.getenv ( "CDC_HOME" ) );

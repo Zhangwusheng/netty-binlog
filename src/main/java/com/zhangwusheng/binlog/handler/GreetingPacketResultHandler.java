@@ -160,17 +160,17 @@ public class GreetingPacketResultHandler extends SimpleChannelInboundHandler<Byt
 				return;
 			}
 			
-			String debugString = ByteBufUtil.prettyHexDump ( msg );
-			log.info ( "GreetingPacketResultHandler==========" );
-			log.info ( debugString );
-			log.info ( "GreetingPacketResultHandler==========" );
+//			String debugString = ByteBufUtil.prettyHexDump ( msg );
+//			log.info ( "GreetingPacketResultHandler==========" );
+//			log.info ( debugString );
+//			log.info ( "GreetingPacketResultHandler==========" );
 			
 			GreetingPacket greetingPacket = new GreetingPacket ();
 			greetingPacket.parse ( msg );
 			
-			log.info ( "=====================" );
+//			log.info ( "=====================" );
 			log.info ( greetingPacket.toString () );
-			log.info ( "=====================" );
+//			log.info ( "=====================" );
 			
 			String user = "repl";
 			String password = "repl";
@@ -179,7 +179,7 @@ public class GreetingPacketResultHandler extends SimpleChannelInboundHandler<Byt
 							,greetingPacket.getScramble ()
 							,greetingPacket.getServerCollation ()  );
 			
-			log.info ( "writeAndFlush authenticateCommand" );
+//			log.info ( "writeAndFlush authenticateCommand" );
 			context.channel ().writeAndFlush ( authenticateCommand.toByteBuf () );
 			context.pipeline().remove(this);
 		} catch (Exception e) {

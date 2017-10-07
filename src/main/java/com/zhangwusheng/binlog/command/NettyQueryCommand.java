@@ -15,6 +15,10 @@ public class NettyQueryCommand implements Command {
 	
 	private String sql = null;
 	
+	public String getSql ( ) {
+		return sql;
+	}
+	
 	public NettyQueryCommand ( String sql) {
 		this.sql = sql;
 	}

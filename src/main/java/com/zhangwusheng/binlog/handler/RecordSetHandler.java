@@ -4,19 +4,21 @@ import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.network.ColumnDefinitionPacket;
 import com.zhangwusheng.binlog.network.RowPacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by zhangwusheng on 17/10/4.
  */
-public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
-    private Logger log = LoggerFactory.getLogger ( RecordsetHandler.class );
+public class RecordSetHandler extends SimpleChannelInboundHandler<ByteBuf> {
+    private Logger log = LoggerFactory.getLogger ( ShowMasterStatusHandler.class );
     
-    enum State
+    protected enum State
     {
         COLUMNS_COUNT,
         COLUMNS_NAMES,
@@ -26,50 +28,63 @@ public class RecordsetHandler  extends SimpleChannelInboundHandler<ByteBuf> {
     private State currentState = State.COLUMNS_COUNT;
     
     private int columnCount  = 0;
-    private int currentColumnNameIndex = 0;
     
+    private List<ColumnDefinitionPacket> columnDefinitionPacketList = new LinkedList< ColumnDefinitionPacket > (  );
+    
+    public int getColumnCount ( ) {
+        return columnCount;
+    }
+    
+    public ColumnDefinitionPacket[] getColumnDefinitionPackets ( ) {
+        return columnDefinitionPacketList.toArray (new ColumnDefinitionPacket[columnDefinitionPacketList.size ()] );
+    }
+    
+    public RowPacket[] getRowPackets ( ) {
+        return rowPacketList.toArray (new RowPacket[rowPacketList.size ()]);
+    }
+    
+    private List<RowPacket> rowPacketList = new LinkedList< RowPacket>();
+    
+    protected void onParseFinish(ChannelHandlerContext ctx){}
     
     protected void channelRead0 ( ChannelHandlerContext ctx, ByteBuf msg ) throws Exception {
-    
-//        String debugString = ByteBufUtil.prettyHexDump ( msg );
-//        log.info ( "RecordsetHandler==========" );
-//        log.info ( debugString );
-//        log.info ( "RecordsetHandler==========" );
-    
         
         if( currentState == State.COLUMNS_COUNT ){
             columnCount = ByteUtil.readInteger ( msg,msg.readableBytes () );
-//            log.error ( "Total Columns = "+columnCount );
             
             currentState = State.COLUMNS_NAMES;
-            currentColumnNameIndex = 0;
         }else if(currentState == State.COLUMNS_NAMES  ){
             if(msg.getByte ( 0 ) == (byte)0xFE){
-//                log.error ( "Column Ended EOF" );
-//                log.error ( "currentColumnNameIndex="+currentColumnNameIndex+",columnCount="+columnCount );
                 currentState = State.ROWS_VALUES;
-                currentColumnNameIndex = 0;
+                msg.skipBytes ( msg.readableBytes () );
             }
             else {
                 ColumnDefinitionPacket columnDefinitionPacket = new ColumnDefinitionPacket ();
                 columnDefinitionPacket.parse ( msg );
-                currentColumnNameIndex++;
                 
+                this.columnDefinitionPacketList.add ( columnDefinitionPacket );
                 log.info ( columnDefinitionPacket.toString () );
             }
         }else if( currentState == State.ROWS_VALUES){
             if(msg.getByte ( 0 ) == (byte)0xFE){
                 currentState = State.COLUMNS_COUNT;
-//                currentColumnNameIndex = 0;
+                msg.skipBytes ( msg.readableBytes () );
                 
-//                log.error ( "Row Parse Ended........." );
+                onParseFinish ( ctx );
             }
             else {
                 RowPacket rowPacket = new RowPacket ();
                 rowPacket.parse ( msg );
                 
+                this.rowPacketList.add ( rowPacket );
                 log.info ( rowPacket.toString () );
-//                currentColumnNameIndex++;
+                
+//                String binlogFile = rowPacket.getValue ( 0 );
+//                String binlogPosition = rowPacket.getValue ( 1 );
+//                String executedGtid = rowPacket.getValue ( 4 );
+
+//                log.info ( "binlogFile="+binlogFile+",binlogPosition="+binlogPosition
+//                        +",executedGtid="+executedGtid);
             }
         }
     }

@@ -47,6 +47,7 @@ public class Main {
                             channelPipeline.addLast ( "ShowMasterStatusHandler",new ShowMasterStatusHandler () );
                             channelPipeline.addLast ( "FetchBinlogChecksumHandler",new FetchBinlogChecksumHandler () );
                             channelPipeline.addLast ( "SetMasterChecksumHandler",new SetMasterBinlogChecksumHandler () );
+                            channelPipeline.addLast ( "BinlogEventHandler",new BinlogEventHandler () );
                         }
                     });
             

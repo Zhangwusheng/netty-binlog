@@ -156,7 +156,7 @@ public class GreetingPacket  implements Packet {
 	}
 	
 	public void parse ( ByteBuf msg ) {
-		log.info ( "msg.readableBytes="+msg.readableBytes () );
+//		log.info ( "msg.readableBytes="+msg.readableBytes () );
 		
 		protocolVersion = ByteUtil.readUnsignedByte(msg);// 一个字节
 //		log.info("mysql protocol version: " + protocolVersion);

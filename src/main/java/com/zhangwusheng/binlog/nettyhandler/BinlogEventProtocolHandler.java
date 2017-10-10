@@ -118,8 +118,8 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
         
         ByteBuf dataBuffer = msg.readSlice ( packetLength );
         
-        String debug = ByteBufUtil.prettyHexDump ( dataBuffer );
-        log.info ( debug );
+//        String debug = ByteBufUtil.prettyHexDump ( dataBuffer );
+//        log.info ( debug );
         
         int marker = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
         
@@ -139,10 +139,10 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
         
 //        log.info ( header.toString ( ) );
         
-        log.info ("dataBuffer.readableBytes ()="
-                + dataBuffer.readableBytes ()
-        +",event length="+length+",total-header="+(packetLength-20));
-//        msg.skipBytes ( ( int ) header.getEventLength ( ) );
+//        log.info ("dataBuffer.readableBytes ()="
+//                + dataBuffer.readableBytes ()
+//        +",event length="+length+",total-header="+(packetLength-20));
+
         currentState = State.END;
         
     }

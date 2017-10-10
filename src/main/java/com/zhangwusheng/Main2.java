@@ -3,6 +3,7 @@ package com.zhangwusheng;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import com.zhangwusheng.binlog.handler.MysqlProtoclHeaderHandler;
 import com.zhangwusheng.binlog.nettyhandler.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -12,19 +13,21 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Created by zws on 9/29/17.
  */
 public class Main2 {
-    
-    
-    
+
+
+    private Logger log = LoggerFactory.getLogger ( Main2.class );
+
     public void test()
     {
-        
-        
+
+//        log.info("this is mtst log");
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         
         
@@ -57,8 +60,8 @@ public class Main2 {
             bootstrap.attr ( dbUser,"repl" );
             bootstrap.attr ( dbPassword,"repl" );
 
-//            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
+            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
+//            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
             //channelFuture.isDone ();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception ex){
@@ -75,7 +78,9 @@ public class Main2 {
         byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
         ByteBuf byteBuf2 = Unpooled.buffer ( 10 );
         byteBuf2.writeBytes ( "Chenlingling".getBytes () );
-        
+        byteBuf.writeBytes(byteBuf2);
+
+        System.out.println(byteBuf.readableBytes());
         byte bbb = byteBuf.readByte ();
         byte aaa = byteBuf.getByte ( 1 );
         

@@ -53,8 +53,8 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
     
     protected void decode ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
     
-        String debug = ByteBufUtil.prettyHexDump ( msg );
-        log.info ( debug );
+//        String debug = ByteBufUtil.prettyHexDump ( msg );
+//        log.info ( debug );
         decode0(ctx, msg, out );
         
         if(  currentState == State.FINISH ){
@@ -85,8 +85,8 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
             }
         }
     
-        String debug = ByteBufUtil.prettyHexDump ( msg );
-        log.info ( debug );
+//        String debug = ByteBufUtil.prettyHexDump ( msg );
+//        log.info ( debug );
         
         if( currentState == State.COLUMNS_COUNT ){
             columnCount = ByteUtil.readInteger ( msg,1 );
@@ -94,7 +94,7 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
         }else if( currentState == State.COLUMNS_NAMES){
             
             int dataStartIndex = msg.readerIndex ();
-            System.out.println ( "----------"+msg.getByte ( dataStartIndex ) );
+//            System.out.println ( "----------"+msg.getByte ( dataStartIndex ) );
             if(msg.getByte ( dataStartIndex ) == (byte)0xFE){
                 
                 currentState = State.ROWS_VALUES;
@@ -119,7 +119,7 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
                 rowPacket.parse ( rowmsg );
         
                 this.rowPacketList.add ( rowPacket );
-                log.info ( rowPacket.toString () );
+//                log.info ( rowPacket.toString () );
             }
         }
     }

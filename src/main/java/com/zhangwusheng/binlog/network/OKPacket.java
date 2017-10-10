@@ -55,12 +55,12 @@ public class OKPacket implements Packet {
     
     @Override
     public String toString ( ) {
-        return "\n-------\nOKPacket{" +
+        return "OKPacket{" +
                 "resultCode=" + resultCode +
                 ", affectedRows=" + affectedRows +
                 ", lastInsertId=" + lastInsertId +
                 ", statusFlag=" + statusFlag +
                 ", numberOfWarning=" + numberOfWarning +
-                "}\n------------\n";
+                "}";
     }
 }

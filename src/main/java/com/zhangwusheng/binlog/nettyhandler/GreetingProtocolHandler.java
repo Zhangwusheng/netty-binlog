@@ -45,7 +45,7 @@ public class GreetingProtocolHandler extends ByteToMessageDecoder {
         GreetingPacket greetingPacket = new GreetingPacket ();
         greetingPacket.parse ( buffer );
     
-        log.info ( greetingPacket.toString () );
+//        log.info ( greetingPacket.toString () );
         
         ctx.pipeline ().remove ( this );
         return greetingPacket;

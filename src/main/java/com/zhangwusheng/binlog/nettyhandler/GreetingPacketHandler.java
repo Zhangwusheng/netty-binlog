@@ -20,7 +20,7 @@ public class GreetingPacketHandler extends MessageToMessageDecoder {
     protected void decode ( ChannelHandlerContext ctx, Object msg, List out ) throws Exception {
         if( msg instanceof GreetingPacket){
             GreetingPacket greetingPacket = (GreetingPacket) msg;
-            log.info ( "Greeting:"+greetingPacket.toString () );
+//            log.info ( "Greeting:"+greetingPacket.toString () );
     
             String user = "repl";
             String password = "repl";

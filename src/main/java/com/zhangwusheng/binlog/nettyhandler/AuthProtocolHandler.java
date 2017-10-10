@@ -36,7 +36,7 @@ public class AuthProtocolHandler extends ByteToMessageDecoder {
         int packetLength = ByteUtil.readInteger ( buffer,3 );
         int sequence = ByteUtil.readInteger ( buffer,1 );
         
-        log.info ( "packetLength="+packetLength+",sequence="+sequence );
+//        log.info ( "packetLength="+packetLength+",sequence="+sequence );
         
         if( buffer.readableBytes () < packetLength){
             buffer.resetReaderIndex ();
@@ -46,7 +46,7 @@ public class AuthProtocolHandler extends ByteToMessageDecoder {
         OKPacket greetingPacket = new OKPacket ();
         greetingPacket.parse ( buffer );
     
-        log.info ( greetingPacket.toString () );
+//        log.info ( greetingPacket.toString () );
         
         ctx.pipeline ().remove ( this );
         return greetingPacket;

@@ -85,13 +85,9 @@ public class ColumnDefinitionPacket implements Packet {
         decimals = ByteUtil.readInteger ( msg,1 );
         msg.skipBytes ( 2 );//Filler 00 00
         
-        if( msg.readableBytes () > 0 ){
-            log.error ( "Still messages in buffer!......." );
-//            debug = ByteBufUtil.prettyHexDump ( msg );
-//            log.error ( debug );
-            
-        }
-        
+//        if( msg.readableBytes () > 0 ){
+//            log.error ( "Still messages in buffer!......." );
+//        }
     }
     
     @Override

@@ -26,35 +26,42 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
     
     @Override
     protected void channelRead0 ( ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf ) throws Exception {
-    
+
 //        log.info ( "+++++++MysqlProtoclHeaderHandler.channelRead0 called" );
         
         
         /****
-        “Type	    Name	        Description
-        int<3>	    payload_length	Length of the payload. The number of bytes in the packet
-                                    beyond the initial 4 bytes that make up the packet header.
-        int<1>	    sequence_id	    Sequence ID
-        string<var>	payload	        [len=payload_length] payload of the packet”
-    
-        摘录来自: Oracle. “MySQL Internals Manual”。 iBooks.
+         “Type	    Name	        Description
+         int<3>	    payload_length	Length of the payload. The number of bytes in the packet
+         beyond the initial 4 bytes that make up the packet header.
+         int<1>	    sequence_id	    Sequence ID
+         string<var>	payload	        [len=payload_length] payload of the packet”
+         
+         摘录来自: Oracle. “MySQL Internals Manual”。 iBooks.
          */
-    
+        
         if( null == byteBuf){
             return;
         }else if( byteBuf.readableBytes () == 0 ){
             return;
         }
     
-//        String debugString = ByteBufUtil.prettyHexDump ( byteBuf );
+        log.info ( "----------------------" );
+        String debugString = ByteBufUtil.prettyHexDump ( byteBuf );
 //        log.info ( "MysqlProtoclHeaderHandler==========" );
-//        log.info ( debugString );
+        log.info ( debugString );
 //        log.info ( "MysqlProtoclHeaderHandler==========" );
-    
+        
+        if( dataLeft!= null ){
+            log.info ( "*****************" );
+            debugString = ByteBufUtil.prettyHexDump ( dataLeft );
+            log.info (debugString.length ()+":"+ debugString );
+        }
+        log.info ( "----------------------" );
         
         byte error = byteBuf.getByte (0);
         //看看是不是ERR_PACKT
-        
+
 //        log.info ( "========Total Readed:"+ byteBuf.readableBytes () );
         
         if( 0xFF == error ){
@@ -71,14 +78,20 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
         }else{
             //首先把剩下的数据和读取到的数据合并起来.
             CompositeByteBuf compositeByteBuf = Unpooled.compositeBuffer ();
-            if( dataLeft != null ){
+            if( dataLeft != null && dataLeft.readableBytes () > 0 ){
                 compositeByteBuf.addComponent ( true,dataLeft );
             }
             compositeByteBuf.addComponent ( true,byteBuf );
             
             //这里有可能一次性读过来很多Packet的数据，所以要循环判断
             while( true ){
-                if( compositeByteBuf.readableBytes () < 4 ){
+//                if( compositeByteBuf.readableBytes () == 0 ){
+//                    dataLeft.release ();
+//                    dataLeft = null;
+//                    return;
+//                }
+//                else
+                    if( compositeByteBuf.readableBytes () < 4 ){
                     if( dataLeft != null ){
                         dataLeft.release ();
                     }
@@ -86,15 +99,14 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
 //                    log.info ( "byteBuf.readableBytes () < 4:"+compositeByteBuf.readableBytes () );
                     return;
                 }
-    
+                
                 compositeByteBuf.markReaderIndex ();
                 headerLength = ByteUtil.readInteger ( compositeByteBuf, 3 );
                 sequence = ByteUtil.readInteger ( compositeByteBuf, 1 );
-    
-    
+
+
 //                log.info ( "readableBytes="+compositeByteBuf.readableBytes ()+",headerLength="+headerLength );
-                if( compositeByteBuf.readableBytes () < headerLength)
-                {
+                if( compositeByteBuf.readableBytes () < headerLength) {
                     compositeByteBuf.resetReaderIndex ();
                     if( dataLeft != null ){
                         dataLeft.release ();
@@ -122,19 +134,19 @@ public class MysqlProtoclHeaderHandler extends SimpleChannelInboundHandler<ByteB
     }
     
     private void onFullPacketDataReaded(ChannelHandlerContext channelHandlerContext,ByteBuf buffer){
-
-            String debug = ByteBufUtil.prettyHexDump ( buffer );
+        
+        String debug = ByteBufUtil.prettyHexDump ( buffer );
 //            log.info ( "-----------------" );
-            log.info ( debug );
+        log.info ( debug );
 //            log.info ( "-----------------" );
         
-            channelHandlerContext.fireChannelRead ( buffer );
-
+        channelHandlerContext.fireChannelRead ( buffer );
+        
     }
     
     @Override
     public void exceptionCaught ( ChannelHandlerContext ctx, Throwable cause ) throws Exception {
-
+        
         log.error ( cause.getMessage () );
         HandlerUtil.cleanChannelContext ( ctx, cause );
     }

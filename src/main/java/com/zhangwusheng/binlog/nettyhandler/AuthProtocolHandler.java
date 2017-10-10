@@ -1,8 +1,8 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.handler.GreetingPacketResultHandler;
-import com.zhangwusheng.binlog.network.GreetingPacket;
+//import com.zhangwusheng.binlog.handler.GreetingPacketResultHandler;
+//import com.zhangwusheng.binlog.network.GreetingPacket;
 import com.zhangwusheng.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

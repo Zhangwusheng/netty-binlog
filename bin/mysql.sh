@@ -49,4 +49,8 @@ FLUSH PRIVILEGES;
 /usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/my.cnf --user=mysql &
 
 tcpdump -i wlp3s0 -nn -X 'port 3333 and  host 192.168.1.105' -w mysql2.cap
->>>>>>> c54034d37d2815abfe21dcb5daac7e347547a27b
+
+/usr/local/mysql/bin/mysql -urepl -p -h192.168.1.105 -P3333
+
+show binlog events in 'mysql-bin.000002';
+

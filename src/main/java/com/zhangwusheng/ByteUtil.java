@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.BitSet;
 
 /**
  * Created by zhangwusheng on 17/10/1.
@@ -18,17 +19,6 @@ public class ByteUtil {
             return (int) (256 + value);
         }
         return value;
-    }
-    
-    /**
-     * Read int written in little-endian format.throws IOException
-     */
-    public static int readInteger( ByteBuf byteBuf ,int length)  {
-        int result = 0;
-        for (int i = 0; i < length; ++i) {
-            result |= (verify(byteBuf.readByte ()) << (i << 3));
-        }
-        return result;
     }
     
     /**
@@ -45,7 +35,17 @@ public class ByteUtil {
         byteBuf.readBytes ( result );
         return new String(result);
     }
-    
+    /**
+     * Read int written in little-endian format.throws IOException
+     */
+    public static int readInteger( ByteBuf byteBuf ,int length)  {
+        int result = 0;
+        for (int i = 0; i < length; ++i) {
+            result |= (verify(byteBuf.readByte ()) << (i << 3));
+        }
+        return result;
+    }
+
     public static int readUnsignedInt(ByteBuf src, int bits) {
         int result = 0;
         for (int i = 0; i < bits; ++i) {
@@ -103,7 +103,50 @@ public class ByteUtil {
 //        }
         return number.intValue();
     }
-    
+
+    public static int bigEndianInteger(byte[] bytes, int offset, int length) {
+        int result = 0;
+        for (int i = offset; i < (offset + length); i++) {
+            byte b = bytes[i];
+            result = (result << 8) | (b >= 0 ? (int) b : (b + 256));
+        }
+        return result;
+    }
+
+    public static byte[] readSpecifiedLengthBytes(ByteBuf src, int length) {
+
+        byte[] str = new byte[length];
+        src.readBytes(str);
+        return str;
+    }
+
+    public static BitSet readBitSet(ByteBuf buf, int length, boolean bigEndian)  {
+        // according to MySQL internals the amount of storage required for N
+        // columns is INT((N+7)/8) bytes
+        byte[] bytes = readSpecifiedLengthBytes(buf, (length + 7) >> 3);
+        bytes = bigEndian ? bytes : reverse(bytes);
+        BitSet result = new BitSet();
+        for (int i = 0; i < length; i++) {
+            if ((bytes[i >> 3] & (1 << (i % 8))) != 0) {
+                result.set(i);
+            }
+        }
+        return result;
+    }
+
+
+    private static byte[] reverse(byte[] bytes) {
+        for (int i = 0, length = bytes.length >> 1; i < length; i++) {
+            int j = bytes.length - 1 - i;
+            byte t = bytes[i];
+            bytes[i] = bytes[j];
+            bytes[j] = t;
+        }
+        return bytes;
+    }
+
+
+
     // 下面的函数主要用来写
     public static byte[] writeByte(byte value, int length) {
         byte[] result = new byte[length];

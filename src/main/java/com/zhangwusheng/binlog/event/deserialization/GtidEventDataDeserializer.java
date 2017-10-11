@@ -43,7 +43,8 @@ public class GtidEventDataDeserializer implements EventDataDeserializer<GtidEven
             byteArrayToHex(sid, 10, 6) + ":" +
             String.format("%d", gno);
         eventData.setGtid (  gtid );
-        
+
+        msg.skipBytes(CHECKSUM_LENGTH);
         return eventData;
         
     }

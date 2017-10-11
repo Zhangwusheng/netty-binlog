@@ -65,7 +65,7 @@ public class PreviousGtidsDataDeserializer implements EventDataDeserializer<Prev
         previousGtidsData.setGtidSet ( gtidSet );
         
         //checksum
-        msg.skipBytes ( 4 );
+        msg.skipBytes(CHECKSUM_LENGTH);
         
         return previousGtidsData;
         

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Stanley Shyiko
+ * Copyright 2015 Stanley Shyiko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.RotateEventData;
+//import com.github.shyiko.mysql.binlog.event.IntVarEventData;
 //import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.event.data.RotateEventData;
+import com.zhangwusheng.binlog.event.data.IntVarEventData;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
@@ -27,16 +26,15 @@ import java.io.IOException;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public class RotateEventDataDeserializer implements EventDataDeserializer<RotateEventData > {
+public class IntVarEventDataDeserializer implements EventDataDeserializer<IntVarEventData> {
 
-//    @Override
-    public RotateEventData deserialize(ByteBuf inputStream)  {
-        RotateEventData eventData = new RotateEventData();
-        eventData.setBinlogPosition( ByteUtil.readUnsignedLong ( inputStream,8 ));
-        //减掉4个字节的checksum
-        eventData.setBinlogFilename ( ByteUtil.readString ( inputStream,inputStream.readableBytes ()-CHECKSUM_LENGTH ) );
+
+    public IntVarEventData deserialize(ByteBuf inputStream)  {
+        IntVarEventData event = new IntVarEventData();
+        event.setType(ByteUtil.readInteger(inputStream,1) );
+        event.setValue(ByteUtil.readUnsignedLong(inputStream,8) );
+        //checksum
         inputStream.skipBytes(CHECKSUM_LENGTH);
-//        eventData.setBinlogFilename(inputStream.readString(inputStream.available()));
-        return eventData;
+        return event;
     }
 }

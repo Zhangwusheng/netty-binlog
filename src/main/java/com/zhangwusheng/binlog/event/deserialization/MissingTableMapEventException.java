@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Stanley Shyiko
+ * Copyright 2015 Stanley Shyiko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,14 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.EventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
-import com.zhangwusheng.binlog.event.EventData;
-import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
+//import java.io.IOException;
 
 /**
- * @param <T> event data this deserializer is responsible for
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public interface EventDataDeserializer <T extends EventData > {
+public class MissingTableMapEventException extends RuntimeException {
 
-    int CHECKSUM_LENGTH = 4;
-    T deserialize ( ByteBuf msg ) ;
+    public MissingTableMapEventException(String message) {
+        super(message);
+    }
 }

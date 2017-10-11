@@ -36,6 +36,8 @@ public class FormatDescriptionEventDataDeserializer implements EventDataDeserial
         eventData.setServerVersion(ByteUtil.readString ( inputStream,50 ).trim());
         inputStream.skipBytes (4); // redundant, present in a header
         eventData.setHeaderLength(ByteUtil.readInteger ( inputStream,1 ));
+
+        inputStream.skipBytes(CHECKSUM_LENGTH);
         // lengths for all event types
         return eventData;
     }

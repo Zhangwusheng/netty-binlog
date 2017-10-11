@@ -41,7 +41,7 @@ public class QueryEventDataDeserializer implements EventDataDeserializer<QueryEv
 //        eventData.setSql(inputStream.readString(inputStream.available()));
         eventData.setSql ( ByteUtil.readString ( inputStream,inputStream.readableBytes () -4) );
         //CheckSum
-        inputStream.skipBytes ( 4 );
+        inputStream.skipBytes(CHECKSUM_LENGTH);
         return eventData;
     }
 }

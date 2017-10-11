@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Stanley Shyiko
+ * Copyright 2014 Patrick Prasse
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhangwusheng.binlog.event.deserialization;
-
-//import com.github.shyiko.mysql.binlog.event.EventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
+package com.zhangwusheng.binlog.event.data;
 
 import com.zhangwusheng.binlog.event.EventData;
-import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
 
 /**
- * @param <T> event data this deserializer is responsible for
- * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
+ * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>
  */
-public interface EventDataDeserializer <T extends EventData > {
+public class RowsQueryEventData implements EventData {
 
-    int CHECKSUM_LENGTH = 4;
-    T deserialize ( ByteBuf msg ) ;
+    private String query;
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("RowsQueryEventData");
+        sb.append("{query='").append(query).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Stanley Shyiko
+ * Copyright 2013 Patrick Prasse
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,29 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.RotateEventData;
 //import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.event.data.RotateEventData;
+import com.zhangwusheng.binlog.event.data.RowsQueryEventData;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
 /**
- * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
+ * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>
  */
-public class RotateEventDataDeserializer implements EventDataDeserializer<RotateEventData > {
+public class RowsQueryEventDataDeserializer implements EventDataDeserializer<RowsQueryEventData> {
 
 //    @Override
-    public RotateEventData deserialize(ByteBuf inputStream)  {
-        RotateEventData eventData = new RotateEventData();
-        eventData.setBinlogPosition( ByteUtil.readUnsignedLong ( inputStream,8 ));
-        //减掉4个字节的checksum
-        eventData.setBinlogFilename ( ByteUtil.readString ( inputStream,inputStream.readableBytes ()-CHECKSUM_LENGTH ) );
+    public RowsQueryEventData deserialize(ByteBuf inputStream)  {
+        RowsQueryEventData eventData = new RowsQueryEventData();
+//        inputStream.readInteger(1); // ignored
+        inputStream.skipBytes(1);
+        String query = ByteUtil.readString(inputStream,inputStream.readableBytes()-CHECKSUM_LENGTH);
+        eventData.setQuery(query);
+        //checksum
         inputStream.skipBytes(CHECKSUM_LENGTH);
-//        eventData.setBinlogFilename(inputStream.readString(inputStream.available()));
+//        eventData.setQuery(inputStream.readString(inputStream.available()));
         return eventData;
     }
+
 }

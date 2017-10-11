@@ -30,8 +30,8 @@ public class SetMasterBinlogChecksumRecordHandler extends MessageToMessageDecode
         }
     
         DumpBinaryLogCommand queryCommand =
-                new DumpBinaryLogCommand (1,"mysql-bin.000002",683 );
-//        ctx.channel ().writeAndFlush ( queryCommand.toByteBuf () );
+                new DumpBinaryLogCommand (1,"mysql-bin.000002",4 );
+        ctx.channel ().writeAndFlush ( queryCommand.toByteBuf () );
 
         GtidSet gtidSet = new GtidSet( "584416c8-a84b-11e7-b641-74e50bc69d0a:1-4");
 //        DumpBinaryLogGitdCommand dumpBinaryLogGitdCommand = new DumpBinaryLogGitdCommand(
@@ -42,8 +42,8 @@ public class SetMasterBinlogChecksumRecordHandler extends MessageToMessageDecode
         ByteBuf byteBuf = dumpBinaryLogGitdCommand.toByteBuf ();
 
         String debug = ByteBufUtil.prettyHexDump(byteBuf);
-        log.info(debug);
-        ctx.channel ().writeAndFlush (byteBuf );
+//        log.info(debug);
+//        ctx.channel ().writeAndFlush (byteBuf );
 
       }
 }

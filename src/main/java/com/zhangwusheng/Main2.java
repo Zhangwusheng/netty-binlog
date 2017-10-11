@@ -63,8 +63,8 @@ public class Main2 {
             bootstrap.attr ( dbUser,"repl" );
             bootstrap.attr ( dbPassword,"repl" );
 
-//            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
+            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
+//            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
             //channelFuture.isDone ();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception ex){

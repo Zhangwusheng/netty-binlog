@@ -47,6 +47,7 @@ public class WriteRowsEventDataDeserializer extends AbstractRowsEventDataDeseria
     public WriteRowsEventData deserialize(ByteBuf inputStream)  {
         WriteRowsEventData eventData = new WriteRowsEventData();
         long tableId = ByteUtil.readUnsignedLong(inputStream,6);
+        eventData.setTableId(tableId);
 //        eventData.setTableId(inputStream.readLong(6));
         inputStream.skipBytes(2); // reserved
         if (mayContainExtraInformation) {

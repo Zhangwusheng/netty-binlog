@@ -1,8 +1,10 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.event.EventHeader;
+import com.zhangwusheng.binlog.event.Event;
+import com.zhangwusheng.binlog.event.EventHeaderV4;
 import com.zhangwusheng.binlog.event.EventType;
+import com.zhangwusheng.binlog.event.deserialization.EventDeserializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,74 +34,70 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
     
     protected void decode ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
         
-        String debug = ByteBufUtil.prettyHexDump ( msg );
+//        String debug = ByteBufUtil.prettyHexDump ( msg );
 //        log.info ( debug );
         decode1 ( ctx, msg, out );
         
-        if ( currentState == State.END ) {
-            BinlogEventData data = new BinlogEventData ( );
-            data.setHeader ( this.header );
-            out.add ( data );
-            
-            currentState = State.BEGIN;
-        }
+//        if ( currentState == State.END ) {
+//            BinlogEventData data = new BinlogEventData ( );
+//            data.setHeader ( this.header );
+//            out.add ( data );
+//
+//            currentState = State.BEGIN;
+//        }
         
     }
     
     int packetLength;
     int sequence;
-    EventHeader header;
+    EventHeaderV4 header;
+    Event event = null;
     
-    protected void decode0 ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
-        
-        if ( currentState == State.BEGIN ) {
-            currentState = State.HEADER;
-        }
-        msg.markReaderIndex ( );
-        if ( msg.readableBytes ( ) < 4 ) {
-            msg.resetReaderIndex ( );
-            return;
-        } else {
-            packetLength = ByteUtil.readInteger ( msg, 3 );
-            sequence = ByteUtil.readInteger ( msg, 1 );
-            if ( msg.readableBytes ( ) < packetLength ) {
-                msg.resetReaderIndex ( );
-                return;
-            }
-        }
-        
-        String debug = ByteBufUtil.prettyHexDump ( msg );
-//        log.info ( debug );
-        
-        if ( currentState == State.HEADER ) {
-            int marker = ByteUtil.readUnsignedInt ( msg, 1 );
-            
-            header = new EventHeader ( );
-            long timestamp = ByteUtil.readUnsignedLong ( msg, 4 );
-            header.setTimestamp ( timestamp * 1000L );
-            int type = ByteUtil.readUnsignedInt ( msg, 1 );
-            header.setEventType ( EVENT_TYPES[ type ] );
-            long serverId = ByteUtil.readUnsignedLong ( msg, 4 );
-            header.setServerId ( serverId );
-            long length = ByteUtil.readUnsignedLong ( msg, 4 );
-            header.setEventLength ( length );
-            long nextPos = ByteUtil.readUnsignedLong ( msg, 4 );
-            header.setNextPosition ( nextPos );
-            int flag = ByteUtil.readUnsignedInt ( msg, 2 );
-            header.setFlag ( flag );
-            
-            log.info ( header.toString ( ) );
-            
-            currentState = State.DATA;
-        } else if ( currentState == State.DATA ) {
-            msg.skipBytes ( ( int ) header.getEventLength ( ) );
-            currentState = State.END;
-        }
-//        BinlogEventData data = new BinlogEventData ( );
-//        data.setHeader ( header );
+//    protected void decode0 ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
 //
-//        out.add ( data );
-    }
+//        if ( currentState == State.BEGIN ) {
+//            currentState = State.HEADER;
+//        }
+//        msg.markReaderIndex ( );
+//        if ( msg.readableBytes ( ) < 4 ) {
+//            msg.resetReaderIndex ( );
+//            return;
+//        } else {
+//            packetLength = ByteUtil.readInteger ( msg, 3 );
+//            sequence = ByteUtil.readInteger ( msg, 1 );
+//            if ( msg.readableBytes ( ) < packetLength ) {
+//                msg.resetReaderIndex ( );
+//                return;
+//            }
+//        }
+//
+//        String debug = ByteBufUtil.prettyHexDump ( msg );
+//
+//        if ( currentState == State.HEADER ) {
+//            int marker = ByteUtil.readUnsignedInt ( msg, 1 );
+//
+//            header = new EventHeaderV4 ( );
+//            long timestamp = ByteUtil.readUnsignedLong ( msg, 4 );
+//            header.setTimestamp ( timestamp * 1000L );
+//            int type = ByteUtil.readUnsignedInt ( msg, 1 );
+//            header.setEventType ( EVENT_TYPES[ type ] );
+//            long serverId = ByteUtil.readUnsignedLong ( msg, 4 );
+//            header.setServerId ( serverId );
+//            long length = ByteUtil.readUnsignedLong ( msg, 4 );
+//            header.setEventLength ( length );
+//            long nextPos = ByteUtil.readUnsignedLong ( msg, 4 );
+//            header.setNextPosition ( nextPos );
+//            int flag = ByteUtil.readUnsignedInt ( msg, 2 );
+//            header.setFlag ( flag );
+//
+//            log.info ( header.toString ( ) );
+//
+//            currentState = State.DATA;
+//        } else if ( currentState == State.DATA ) {
+//            msg.skipBytes ( ( int ) header.getEventLength ( ) );
+//            currentState = State.END;
+//        }
+//    }
     
     protected void decode1 ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
         
@@ -117,25 +115,30 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
         }
         
         ByteBuf dataBuffer = msg.readSlice ( packetLength );
-        
-//        String debug = ByteBufUtil.prettyHexDump ( dataBuffer );
-//        log.info ( debug );
+    
+        ByteUtil.prettyPrint ( dataBuffer,log );
+    
+        EventDeserializer deserializer = new EventDeserializer ();
         
         int marker = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
+    
+         event = deserializer.decodeHeader ( dataBuffer ).decodeEventData ( dataBuffer ).buildEvent ();
+//        log.info ( event.toString () );
         
-        header = new EventHeader ( );
-        long timestamp = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-        header.setTimestamp ( timestamp * 1000L );
-        int type = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
-        header.setEventType ( EVENT_TYPES[ type ] );
-        long serverId = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-        header.setServerId ( serverId );
-        long length = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-        header.setEventLength ( length );
-        long nextPos = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-        header.setNextPosition ( nextPos );
-        int flag = ByteUtil.readUnsignedInt ( dataBuffer, 2 );
-        header.setFlag ( flag );
+        out.add ( event );
+//        header = new EventHeaderV4 ( );
+//        long timestamp = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
+//        header.setTimestamp ( timestamp * 1000L );
+//        int type = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
+//        header.setEventType ( EVENT_TYPES[ type ] );
+//        long serverId = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
+//        header.setServerId ( serverId );
+//        long length = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
+//        header.setEventLength ( length );
+//        long nextPos = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
+//        header.setNextPosition ( nextPos );
+//        int flag = ByteUtil.readUnsignedInt ( dataBuffer, 2 );
+//        header.setFlag ( flag );
         
 //        log.info ( header.toString ( ) );
         
@@ -143,7 +146,7 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
 //                + dataBuffer.readableBytes ()
 //        +",event length="+length+",total-header="+(packetLength-20));
 
-        currentState = State.END;
+//        currentState = State.END;
         
     }
 }

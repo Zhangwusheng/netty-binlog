@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhangwusheng.binlog.event;
+package com.zhangwusheng.binlog.event.deserialization;
 
-import java.io.Serializable;
+//import com.github.shyiko.mysql.binlog.event.EventData;
+//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
+
+import com.zhangwusheng.binlog.event.EventData;
+import io.netty.buffer.ByteBuf;
+
+import java.io.IOException;
 
 /**
+ * @param <T> event data this deserializer is responsible for
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public interface EventHeader extends Serializable {
+public interface EventDataDeserializer <T extends EventData > {
 
-    long getTimestamp ( );
-    EventType getEventType ( );
-    long getServerId ( );
-    long getHeaderLength ( );
-    long getDataLength ( );
+    T deserialize ( ByteBuf msg ) ;
 }

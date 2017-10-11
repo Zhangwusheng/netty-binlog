@@ -64,6 +64,7 @@ log-error                      = /web/data/mysql-5.6.31/mysql-error.log
 log-queries-not-using-indexes  = 1
 slow-query-log                 = 1
 slow-query-log-file            = /web/data/mysql-5.6.31/mysql-slow.log
+log                            = /usr/local/mysql/mysql.log
 
 # MYSELF #
 log-slave-updates=1    
@@ -78,6 +79,9 @@ master_info_repository    = TABLE
 relay_log_recovery        = on
 
 server_id=67
+
+general_log=on
+general_log_file = /usr/local/mysql/data/general.log
 
 #core-file
 #[mysqld_safe]

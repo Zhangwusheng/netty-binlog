@@ -1,22 +1,20 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
-import com.zhangwusheng.binlog.event.EventHeader;
-
-import java.util.Arrays;
+import com.zhangwusheng.binlog.event.EventHeaderV4;
 
 /**
  * Created by zhangwusheng on 17/10/10.
  */
 public class BinlogEventData {
     
-    private EventHeader header;
+    private EventHeaderV4 header;
     private byte[] data;
     
-    public EventHeader getHeader ( ) {
+    public EventHeaderV4 getHeader ( ) {
         return header;
     }
     
-    public void setHeader ( EventHeader header ) {
+    public void setHeader ( EventHeaderV4 header ) {
         this.header = header;
     }
     

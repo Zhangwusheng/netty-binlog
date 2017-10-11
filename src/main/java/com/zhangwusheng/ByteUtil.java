@@ -1,6 +1,8 @@
 package com.zhangwusheng;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -172,5 +174,10 @@ public class ByteUtil {
             return readUnsignedLong(value, 8);
         }
         return null;
+    }
+    
+    public static void prettyPrint(ByteBuf buf, Logger log){
+        String s = ByteBufUtil.prettyHexDump ( buf );
+        log.info ("\n"+ s );
     }
 }

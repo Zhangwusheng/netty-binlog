@@ -26,18 +26,19 @@ public class SetMasterBinlogChecksumRecordHandler extends MessageToMessageDecode
             OKPacket greetingPacket = (OKPacket) msg;
             log.info ( "OKPacket:"+greetingPacket.toString () );
             
-//            ctx.channel ().writeAndFlush ( authenticateCommand.toByteBuf () );
             ctx.pipeline ().remove ( this );
         }
     
         DumpBinaryLogCommand queryCommand =
-                new DumpBinaryLogCommand (1,"mysql-bin.000002",4 );
+                new DumpBinaryLogCommand (1,"mysql-bin.000002",683 );
 //        ctx.channel ().writeAndFlush ( queryCommand.toByteBuf () );
 
-        GtidSet gtidSet = new GtidSet( "584416c8-a84b-11e7-b641-74e50bc69d0a:1-2");
+        GtidSet gtidSet = new GtidSet( "584416c8-a84b-11e7-b641-74e50bc69d0a:1-4");
+//        DumpBinaryLogGitdCommand dumpBinaryLogGitdCommand = new DumpBinaryLogGitdCommand(
+//                2,"mysql-bin.000002",4,gtidSet);
         DumpBinaryLogGitdCommand dumpBinaryLogGitdCommand = new DumpBinaryLogGitdCommand(
-2,"mysql-bin.000002",4,gtidSet);
-
+                2,"mysql-bin.000002",1119,gtidSet);
+    
         ByteBuf byteBuf = dumpBinaryLogGitdCommand.toByteBuf ();
 
         String debug = ByteBufUtil.prettyHexDump(byteBuf);

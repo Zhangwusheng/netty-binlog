@@ -1,5 +1,6 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
+import com.zhangwusheng.binlog.event.Event;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.slf4j.Logger;
@@ -15,8 +16,8 @@ public class BinlogEventRecordHandler extends MessageToMessageDecoder {
     
     
     protected void decode ( ChannelHandlerContext ctx, Object msg, List out ) throws Exception {
-        if( msg instanceof BinlogEventData){
-            BinlogEventData data = (BinlogEventData )msg;
+        if( msg instanceof Event){
+            Event data = (Event )msg;
             log.info (  data.toString ());
         }
     }

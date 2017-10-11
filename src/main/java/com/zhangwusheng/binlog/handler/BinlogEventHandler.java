@@ -9,10 +9,8 @@ package com.zhangwusheng.binlog.handler;
 
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.HandlerUtil;
-import com.zhangwusheng.binlog.event.EventHeader;
+import com.zhangwusheng.binlog.event.EventHeaderV4;
 import com.zhangwusheng.binlog.event.EventType;
-import com.zhangwusheng.binlog.network.EofPacket;
-import com.zhangwusheng.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,7 +31,7 @@ public class BinlogEventHandler extends SimpleChannelInboundHandler<ByteBuf> {
 			
 			log.info ( ByteBufUtil.prettyHexDump ( msg) );
 			
-			EventHeader header = new EventHeader ();
+			EventHeaderV4 header = new EventHeaderV4 ();
 			header.setTimestamp( ByteUtil.readUnsignedLong(msg, 4) * 1000L);
 			header.setEventType(EVENT_TYPES[ByteUtil.readUnsignedInt(msg, 1)]);
 			header.setServerId(ByteUtil.readUnsignedLong(msg, 4));

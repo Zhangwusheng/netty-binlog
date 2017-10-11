@@ -3,10 +3,13 @@ package com.zhangwusheng;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import com.zhangwusheng.binlog.GtidSet;
+import com.zhangwusheng.binlog.command.DumpBinaryLogGitdCommand;
 import com.zhangwusheng.binlog.handler.MysqlProtoclHeaderHandler;
 import com.zhangwusheng.binlog.nettyhandler.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -60,8 +63,8 @@ public class Main2 {
             bootstrap.attr ( dbUser,"repl" );
             bootstrap.attr ( dbPassword,"repl" );
 
-            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
-//            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
+//            ChannelFuture channelFuture = bootstrap.connect("192.168.1.105",3333).sync();
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",3306).sync();
             //channelFuture.isDone ();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception ex){
@@ -75,6 +78,18 @@ public class Main2 {
     
     public static void main(String[] args) {
         ByteBuf byteBuf = Unpooled.buffer ( 10 );
+        GtidSet gtidSet = new GtidSet ( "584416c8-a84b-11e7-b641-74e50bc69d0a:1-2" );
+        String uuid = "584416c8-a84b-11e7-b641-74e50bc69d0a";
+        uuid = uuid.replace ( "-","" );
+        byte[] bb = DumpBinaryLogGitdCommand.hexToByteArray (uuid  );
+        byteBuf.writeBytes ( bb );
+        String b2 = ByteBufUtil.prettyHexDump ( byteBuf );
+        System.out.println (b2 );
+        
+//        System.out.println (gtidSet.toString () );
+//        System.exit ( 0 );
+        
+       
         byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
         ByteBuf byteBuf2 = Unpooled.buffer ( 10 );
         byteBuf2.writeBytes ( "Chenlingling".getBytes () );

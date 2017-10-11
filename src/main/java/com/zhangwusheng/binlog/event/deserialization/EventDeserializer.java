@@ -1,8 +1,13 @@
 package com.zhangwusheng.binlog.event.deserialization;
 
+import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.*;
-import com.zhangwusheng.binlog.event.data.NullEventData;
+//import com.zhangwusheng.binlog.event.data.NullEventData;
+import com.zhangwusheng.binlog.handler.AuthenticateResultHandler;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -10,6 +15,10 @@ import java.util.Map;
  * Created by zhangwusheng on 17/10/11.
  */
 public class EventDeserializer {
+    
+    private Logger log = LoggerFactory.getLogger ( EventDeserializer.class );
+    
+    
     private EventHeaderV4Deserializer eventHeaderDeserializer= new EventHeaderV4Deserializer ();;
     private final Map<EventType, EventDataDeserializer> eventDataDeserializers= new IdentityHashMap<EventType, EventDataDeserializer> ();;
     private NullEventDataDeserializer nullEventDataDeserializer = new NullEventDataDeserializer ();
@@ -32,6 +41,12 @@ public class EventDeserializer {
 //            EventData eventData = dataDeserializer.deserialize ( in );
 //        }
     
+//        if( eventHeader.getEventType () == EventType.PREVIOUS_GTIDS){
+//            log.info ( "PREVIOUS_GTIDS==========================================" );
+//            ByteUtil.prettyPrint ( in,log );
+//            log.info ( "PREVIOUS_GTIDS==========================================" );
+//        }
+        
         EventDataDeserializer dataDeserializer =getDataDeserializer(eventHeader.getEventType ());
         eventData = dataDeserializer.deserialize ( in );
         return this;
@@ -77,14 +92,18 @@ public class EventDeserializer {
     
     
     private void registerDefaultEventDataDeserializers() {
-//        eventDataDeserializers.put(EventType.FORMAT_DESCRIPTION,
-//                new FormatDescriptionEventDataDeserializer());
-//        eventDataDeserializers.put(EventType.ROTATE,
-//                new RotateEventDataDeserializer());
+        eventDataDeserializers.put(EventType.FORMAT_DESCRIPTION,
+                new FormatDescriptionEventDataDeserializer());
+        eventDataDeserializers.put(EventType.ROTATE,
+                new RotateEventDataDeserializer());
+        eventDataDeserializers.put ( EventType.PREVIOUS_GTIDS,
+                new PreviousGtidsDataDeserializer ());
+        eventDataDeserializers.put ( EventType.STOP
+        ,new StopEventDataDeserializer ());
 //        eventDataDeserializers.put(EventType.INTVAR,
 //                new IntVarEventDataDeserializer());
-//        eventDataDeserializers.put(EventType.QUERY,
-//                new QueryEventDataDeserializer());
+        eventDataDeserializers.put(EventType.QUERY,
+                new QueryEventDataDeserializer());
 //        eventDataDeserializers.put(EventType.TABLE_MAP,
 //                new TableMapEventDataDeserializer());
 //        eventDataDeserializers.put(EventType.XID,

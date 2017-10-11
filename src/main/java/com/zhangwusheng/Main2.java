@@ -77,30 +77,37 @@ public class Main2 {
     }
     
     public static void main(String[] args) {
-        ByteBuf byteBuf = Unpooled.buffer ( 10 );
-        GtidSet gtidSet = new GtidSet ( "584416c8-a84b-11e7-b641-74e50bc69d0a:1-2" );
-        String uuid = "584416c8-a84b-11e7-b641-74e50bc69d0a";
-        uuid = uuid.replace ( "-","" );
-        byte[] bb = DumpBinaryLogGitdCommand.hexToByteArray (uuid  );
-        byteBuf.writeBytes ( bb );
-        String b2 = ByteBufUtil.prettyHexDump ( byteBuf );
-        System.out.println (b2 );
         
+//        StringBuilder sb = new StringBuilder (  );
+//        sb.append ( "zhangwusheng" );
+//        sb.setLength ( sb.length ()-1 );
+//        System.out.println (sb.toString () );
+//        System.exit ( 0 );
+        
+//        ByteBuf byteBuf = Unpooled.buffer ( 10 );
+//        GtidSet gtidSet = new GtidSet ( "584416c8-a84b-11e7-b641-74e50bc69d0a:1-2" );
+//        String uuid = "584416c8-a84b-11e7-b641-74e50bc69d0a";
+//        uuid = uuid.replace ( "-","" );
+//        byte[] bb = DumpBinaryLogGitdCommand.hexToByteArray (uuid  );
+//        byteBuf.writeBytes ( bb );
+//        String b2 = ByteBufUtil.prettyHexDump ( byteBuf );
+//        System.out.println (b2 );
+//
 //        System.out.println (gtidSet.toString () );
 //        System.exit ( 0 );
         
        
-        byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
-        ByteBuf byteBuf2 = Unpooled.buffer ( 10 );
-        byteBuf2.writeBytes ( "Chenlingling".getBytes () );
-        byteBuf.writeBytes(byteBuf2);
-
-        System.out.println(byteBuf.readableBytes());
-        byte bbb = byteBuf.readByte ();
-        byte aaa = byteBuf.getByte ( 1 );
-        
-        System.out.println ( (char)bbb );
-        System.out.println ((char)aaa );
+//        byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
+//        ByteBuf byteBuf2 = Unpooled.buffer ( 10 );
+//        byteBuf2.writeBytes ( "Chenlingling".getBytes () );
+//        byteBuf.writeBytes(byteBuf2);
+//
+//        System.out.println(byteBuf.readableBytes());
+//        byte bbb = byteBuf.readByte ();
+//        byte aaa = byteBuf.getByte ( 1 );
+//
+//        System.out.println ( (char)bbb );
+//        System.out.println ((char)aaa );
 //        System.exit ( 1 );
         
         

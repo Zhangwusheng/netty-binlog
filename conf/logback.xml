@@ -5,8 +5,8 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
           <encoder>
-              <!--<pattern>[%file:%line][%d][%thread][%level][%logger{0}]%replace(%caller{1}){'\t|Caller.{1}0|\r\n', ''} - %msg%n</pattern>-->
-              <pattern>[%d][%thread][%level][%file:%line] - %msg%n</pattern>
+              <pattern>[%file:%line][%d][%thread][%level][%logger{0}]%replace(%caller{1}){'\t|Caller.{1}0|\r\n', ''} - %msg%n</pattern>
+              <!--<pattern>[%d][%thread][%level][%file:%line] - %msg%n</pattern>-->
               <!--<pattern>[%d][%level][%logger{0}]- %msg%n</pattern>-->
               <!--<pattern>[%d][%thread][%level][%logger{0}]-%msg%n</pattern>-->
               <charset>UTF-8</charset>

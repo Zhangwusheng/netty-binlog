@@ -32,7 +32,7 @@ import com.zws.binlog.GtidSet;
  
  麻蛋，这个连mysql代码都不解析？不可能啊
  */
-public class PreviousGtidsData implements EventData {
+public class PreviousGtidsData implements IEventData {
     private GtidSet gtidSet;
     
     public GtidSet getGtidSet ( ) {

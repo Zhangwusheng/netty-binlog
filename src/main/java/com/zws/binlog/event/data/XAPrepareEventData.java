@@ -20,7 +20,7 @@ import java.util.Arrays;
 /**
  * @author <a href="https://github.com/stevenczp">Steven Cheng</a>
  */
-public class XAPrepareEventData implements EventData {
+public class XAPrepareEventData implements IEventData {
     private boolean onePhase;
     private int formatID;
     private int gtridLength;

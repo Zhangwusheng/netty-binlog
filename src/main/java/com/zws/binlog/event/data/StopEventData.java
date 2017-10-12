@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>
  */
-public class StopEventData implements EventData {
+public class StopEventData implements IEventData {
     
     @Override
     public String toString() {

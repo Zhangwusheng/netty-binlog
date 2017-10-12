@@ -17,7 +17,7 @@ package com.zws.binlog.event.deserialization;
 
 
 import com.zws.ByteUtil;
-import com.zws.binlog.event.data.EventData;
+import com.zws.binlog.event.data.IEventData;
 import com.zws.binlog.event.data.TableMapEventData;
 import io.netty.buffer.ByteBuf;
 
@@ -65,7 +65,7 @@ import java.util.TimeZone;
  * @param <T> event data this deserializer is responsible for
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public abstract class AbstractRowsEventDataDeserializer<T extends EventData> implements EventDataDeserializer<T> {
+public abstract class AbstractRowsEventDataDeserializer<T extends IEventData > implements EventDataDeserializer<T> {
 
     private static final int DIG_PER_DEC = 9;
     private static final int[] DIG_TO_BYTES = {0, 1, 1, 2, 2, 3, 3, 4, 4, 4};

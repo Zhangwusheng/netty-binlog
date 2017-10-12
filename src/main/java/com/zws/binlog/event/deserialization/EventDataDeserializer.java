@@ -15,14 +15,14 @@
  */
 package com.zws.binlog.event.deserialization;
 
-import com.zws.binlog.event.data.EventData;
+import com.zws.binlog.event.data.IEventData;
 import io.netty.buffer.ByteBuf;
 
 /**
  * @param <T> event data this deserializer is responsible for
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public interface EventDataDeserializer <T extends EventData > {
+public interface EventDataDeserializer <T extends IEventData > {
 
     int CHECKSUM_LENGTH = 4;
     T deserialize ( ByteBuf msg ) ;

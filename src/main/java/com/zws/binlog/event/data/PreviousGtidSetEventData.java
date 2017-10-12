@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="https://github.com/jolivares">Juan Olivares</a>
  */
-public class PreviousGtidSetEventData implements EventData {
+public class PreviousGtidSetEventData implements IEventData {
 
     private final String gtidSet;
 

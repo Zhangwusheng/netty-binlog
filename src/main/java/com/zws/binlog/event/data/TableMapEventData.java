@@ -20,7 +20,7 @@ import java.util.BitSet;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public class TableMapEventData implements EventData {
+public class TableMapEventData implements IEventData {
 
     private long tableId;
     private String database;

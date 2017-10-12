@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>
  */
-public class RowsQueryEventData implements EventData {
+public class RowsQueryEventData implements IEventData {
 
     private String query;
 

@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public class QueryEventData implements EventData {
+public class QueryEventData implements IEventData {
 
     private long threadId;
     private long executionTime;

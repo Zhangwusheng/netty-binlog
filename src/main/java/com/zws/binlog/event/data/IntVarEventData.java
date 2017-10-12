@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public class IntVarEventData implements EventData {
+public class IntVarEventData implements IEventData {
 
     /**
      * Type indicating whether the value is meant to be used for the LAST_INSERT_ID() invocation (should be equal 1) or

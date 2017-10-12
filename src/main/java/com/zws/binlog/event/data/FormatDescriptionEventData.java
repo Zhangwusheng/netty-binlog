@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public class FormatDescriptionEventData implements EventData {
+public class FormatDescriptionEventData implements IEventData {
 
     private int binlogVersion;
     private String serverVersion;

@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public class RotateEventData implements EventData {
+public class RotateEventData implements IEventData {
 
     private String binlogFilename;
     private long binlogPosition;

@@ -1,7 +1,7 @@
 package com.zws.binlog.event.deserialization;
 
 import com.zws.binlog.event.Event;
-import com.zws.binlog.event.data.EventData;
+import com.zws.binlog.event.data.IEventData;
 import com.zws.binlog.event.EventHeaderV4;
 import com.zws.binlog.event.EventType;
 import com.zws.binlog.event.data.TableMapEventData;
@@ -32,7 +32,7 @@ public class EventDeserializer {
     }
     
     EventHeaderV4 eventHeader;
-    EventData eventData;
+    IEventData eventData;
     
     public Event buildEvent(){
         Event event = new Event ( eventHeader,eventData  );

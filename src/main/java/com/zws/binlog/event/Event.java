@@ -15,7 +15,7 @@
  */
 package com.zws.binlog.event;
 
-import com.zws.binlog.event.data.EventData;
+import com.zws.binlog.event.data.IEventData;
 
 import java.io.Serializable;
 
@@ -25,9 +25,9 @@ import java.io.Serializable;
 public class Event implements Serializable {
 
     private EventHeaderV4 header;
-    private EventData data;
+    private IEventData data;
 
-    public Event ( EventHeaderV4 header, EventData data) {
+    public Event ( EventHeaderV4 header, IEventData data) {
         this.header = header;
         this.data = data;
     }
@@ -38,7 +38,7 @@ public class Event implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends EventData> T getData() {
+    public <T extends IEventData > T getData() {
         return (T) data;
     }
 

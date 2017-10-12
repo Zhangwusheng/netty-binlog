@@ -18,7 +18,7 @@ package com.zws.binlog.event.data;
 /**
  * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>
  */
-public class GtidEventData implements EventData {
+public class GtidEventData implements IEventData {
 
     public static final byte COMMIT_FLAG = 1;
 

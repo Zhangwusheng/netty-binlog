@@ -20,5 +20,5 @@ import java.io.Serializable;
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
-public interface EventData extends Serializable {
+public interface IEventData extends Serializable {
 }

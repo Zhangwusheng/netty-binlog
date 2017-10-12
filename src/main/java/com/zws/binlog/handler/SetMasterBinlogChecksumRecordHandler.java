@@ -18,14 +18,11 @@ import java.util.List;
  */
 public class SetMasterBinlogChecksumRecordHandler extends MessageToMessageDecoder {
     
-    private Logger log = LoggerFactory.getLogger ( SetMasterBinlogChecksumRecordHandler.class );
-    
     @Override
     protected void decode ( ChannelHandlerContext ctx, Object msg, List out ) throws Exception {
+        
         if( msg instanceof OKPacket){
-            OKPacket greetingPacket = (OKPacket) msg;
-            log.info ( "OKPacket:"+greetingPacket.toString () );
-            
+//            OKPacket greetingPacket = (OKPacket) msg;
             ctx.pipeline ().remove ( this );
         }
     
@@ -41,8 +38,6 @@ public class SetMasterBinlogChecksumRecordHandler extends MessageToMessageDecode
     
         ByteBuf byteBuf = dumpBinaryLogGitdCommand.toByteBuf ();
 
-        String debug = ByteBufUtil.prettyHexDump(byteBuf);
-//        log.info(debug);
         ctx.channel ().writeAndFlush (byteBuf );
 
       }

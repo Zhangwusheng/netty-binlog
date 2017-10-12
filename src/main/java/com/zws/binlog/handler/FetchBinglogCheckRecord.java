@@ -1,14 +1,9 @@
 package com.zws.binlog.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Created by zhangwusheng on 17/10/10.
  */
 public class FetchBinglogCheckRecord {
-    
-    private Logger log = LoggerFactory.getLogger ( FetchBinglogCheckRecord.class );
     
     private        String variableName ;
     private    String variableValue ;

@@ -1,8 +1,6 @@
 package com.zws.binlog.handler;
 
 import io.netty.channel.ChannelHandlerContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,9 +9,7 @@ import java.util.List;
  */
 public class ShowMasterStatusProtocolHandler extends QueryPacketHandlerBase {
     
-    private Logger log = LoggerFactory.getLogger ( ShowMasterStatusProtocolHandler.class );
-    
-    
+      
     @Override
     protected void onParseFinished ( ChannelHandlerContext ctx, Record record, List< Object > out ) {
     
@@ -24,15 +20,11 @@ public class ShowMasterStatusProtocolHandler extends QueryPacketHandlerBase {
                     , record.getRowPackets ( )[ 0 ].getValue ( 1 )
                     , record.getRowPackets ( )[ 0 ].getValue ( 4 )
             );
-    
-//            log.info ( showMasterStatusRecord.toString ( ) );
         }else{
             showMasterStatusRecord = ShowMasterStatusRecord.EMPTY;
         }
         
         out.add ( showMasterStatusRecord );
-    
         ctx.pipeline ().remove ( this );
-    
      }
 }

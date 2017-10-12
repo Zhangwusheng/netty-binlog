@@ -32,72 +32,13 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
     
     
     protected void decode ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
-        
-//        String debug = ByteBufUtil.prettyHexDump ( msg );
-//        log.info ( debug );
         decode1 ( ctx, msg, out );
-        
-//        if ( currentState == State.END ) {
-//            BinlogEventData data = new BinlogEventData ( );
-//            data.setHeader ( this.header );
-//            out.add ( data );
-//
-//            currentState = State.BEGIN;
-//        }
-        
     }
     
     int packetLength;
     int sequence;
-    EventHeaderV4 header;
-    Event event = null;
-    EventDeserializer deserializer = new EventDeserializer ();
 
-//    protected void decode0 ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
-//
-//        if ( currentState == State.BEGIN ) {
-//            currentState = State.HEADER;
-//        }
-//        msg.markReaderIndex ( );
-//        if ( msg.readableBytes ( ) < 4 ) {
-//            msg.resetReaderIndex ( );
-//            return;
-//        } else {
-//            packetLength = ByteUtil.readInteger ( msg, 3 );
-//            sequence = ByteUtil.readInteger ( msg, 1 );
-//            if ( msg.readableBytes ( ) < packetLength ) {
-//                msg.resetReaderIndex ( );
-//                return;
-//            }
-//        }
-//
-//        String debug = ByteBufUtil.prettyHexDump ( msg );
-//
-//        if ( currentState == State.HEADER ) {
-//            int marker = ByteUtil.readUnsignedInt ( msg, 1 );
-//
-//            header = new EventHeaderV4 ( );
-//            long timestamp = ByteUtil.readUnsignedLong ( msg, 4 );
-//            header.setTimestamp ( timestamp * 1000L );
-//            int type = ByteUtil.readUnsignedInt ( msg, 1 );
-//            header.setEventType ( EVENT_TYPES[ type ] );
-//            long serverId = ByteUtil.readUnsignedLong ( msg, 4 );
-//            header.setServerId ( serverId );
-//            long length = ByteUtil.readUnsignedLong ( msg, 4 );
-//            header.setEventLength ( length );
-//            long nextPos = ByteUtil.readUnsignedLong ( msg, 4 );
-//            header.setNextPosition ( nextPos );
-//            int flag = ByteUtil.readUnsignedInt ( msg, 2 );
-//            header.setFlag ( flag );
-//
-//            log.info ( header.toString ( ) );
-//
-//            currentState = State.DATA;
-//        } else if ( currentState == State.DATA ) {
-//            msg.skipBytes ( ( int ) header.getEventLength ( ) );
-//            currentState = State.END;
-//        }
-//    }
+    EventDeserializer deserializer = new EventDeserializer ();
     
     protected void decode1 ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
         
@@ -116,36 +57,13 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
         
         ByteBuf dataBuffer = msg.readSlice ( packetLength );
     
-        ByteUtil.prettyPrint ( dataBuffer,log );
+        //1字节的marker。这个Marker在mysql协议设置了非阻塞之后，会发送FE记录结束指令
+        //此处我们不处理，但是需要跳过这个字节。
+        ByteUtil.readUnsignedInt ( dataBuffer, 1 );
     
-        
-        int marker = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
-    
-         event = deserializer.decodeHeader ( dataBuffer ).decodeEventData ( dataBuffer ).buildEvent ();
-//        log.info ( event.toString () );
+        Event event = deserializer.decodeHeader ( dataBuffer ).decodeEventData ( dataBuffer ).buildEvent ();
         
         out.add ( event );
-//        header = new EventHeaderV4 ( );
-//        long timestamp = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-//        header.setTimestamp ( timestamp * 1000L );
-//        int type = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
-//        header.setEventType ( EVENT_TYPES[ type ] );
-//        long serverId = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-//        header.setServerId ( serverId );
-//        long length = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-//        header.setEventLength ( length );
-//        long nextPos = ByteUtil.readUnsignedLong ( dataBuffer, 4 );
-//        header.setNextPosition ( nextPos );
-//        int flag = ByteUtil.readUnsignedInt ( dataBuffer, 2 );
-//        header.setFlag ( flag );
-        
-//        log.info ( header.toString ( ) );
-        
-//        log.info ("dataBuffer.readableBytes ()="
-//                + dataBuffer.readableBytes ()
-//        +",event length="+length+",total-header="+(packetLength-20));
-
-//        currentState = State.END;
         
     }
 }

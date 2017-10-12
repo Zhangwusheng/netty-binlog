@@ -5,8 +5,6 @@ import com.zws.binlog.network.GreetingPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  */
 public class GreetingProtocolHandler extends ByteToMessageDecoder {
     
-    private Logger log = LoggerFactory.getLogger ( GreetingProtocolHandler.class );
+//    private Logger log = LoggerFactory.getLogger ( GreetingProtocolHandler.class );
     
     @Override
     protected void decode ( ChannelHandlerContext ctx, ByteBuf in, List< Object > out ) throws Exception {
@@ -34,7 +32,7 @@ public class GreetingProtocolHandler extends ByteToMessageDecoder {
         int packetLength = ByteUtil.readInteger ( buffer,3 );
         int sequence = ByteUtil.readInteger ( buffer,1 );
         
-        log.info ( "packetLength="+packetLength+",sequence="+sequence );
+//        log.info ( "packetLength="+packetLength+",sequence="+sequence );
         
         if( buffer.readableBytes () < packetLength){
             buffer.resetReaderIndex ();

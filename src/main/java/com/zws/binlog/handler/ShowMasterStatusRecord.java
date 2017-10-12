@@ -1,13 +1,9 @@
 package com.zws.binlog.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Created by zhangwusheng on 17/10/10.
  */
 public class ShowMasterStatusRecord {
-    private Logger log = LoggerFactory.getLogger ( ShowMasterStatusRecord.class );
     
     private        String binlogFile ;
     private    String binlogPosition ;

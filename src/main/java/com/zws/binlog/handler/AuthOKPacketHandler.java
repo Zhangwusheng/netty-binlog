@@ -19,8 +19,8 @@ public class AuthOKPacketHandler extends MessageToMessageDecoder {
     @Override
     protected void decode ( ChannelHandlerContext ctx, Object msg, List out ) throws Exception {
         if( msg instanceof OKPacket){
-            OKPacket greetingPacket = (OKPacket) msg;
-            log.info ( "Auth OKPacket:"+greetingPacket.toString () );
+            OKPacket okPacket = (OKPacket) msg;
+            log.info ( "Auth OKPacket:"+okPacket.toString () );
             
             ShowMasterStatusCommand showMasterStatusCommand = new ShowMasterStatusCommand ();
             ctx.channel ().writeAndFlush ( showMasterStatusCommand.toByteBuf () );

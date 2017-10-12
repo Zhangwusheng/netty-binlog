@@ -6,8 +6,6 @@ import com.zws.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,8 +13,6 @@ import java.util.List;
  * Created by zhangwusheng on 17/10/10.
  */
 public class NonQueryPacketHandlerBase extends ByteToMessageDecoder {
-    
-    private Logger log = LoggerFactory.getLogger ( NonQueryPacketHandlerBase.class );
     
     protected OKPacket okPacket;
     protected EofPacket eofPacket;
@@ -42,8 +38,7 @@ public class NonQueryPacketHandlerBase extends ByteToMessageDecoder {
         
         this.okPacket = new OKPacket ();
         okPacket.parse ( msg );
-//        out.add ( okPacket );
-    
+        
         onParseFinish(ctx,out);
     }
 }

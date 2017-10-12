@@ -1,10 +1,7 @@
 package com.zws.binlog.command;
 
 /**
- * 
- * @author zhiqiang.liu
- * @2016年1月1日
- * @QQ: 837500869
+ * Created by zhangwusheng on 17/10/10.
  */
 
 import com.zws.ByteUtil;

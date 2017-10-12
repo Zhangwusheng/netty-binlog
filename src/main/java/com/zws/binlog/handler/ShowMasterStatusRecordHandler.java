@@ -18,12 +18,9 @@ public class ShowMasterStatusRecordHandler extends MessageToMessageDecoder {
     @Override
     protected void decode ( ChannelHandlerContext ctx, Object msg, List out ) throws Exception {
         if( msg instanceof ShowMasterStatusRecord){
-            ShowMasterStatusRecord greetingPacket = (ShowMasterStatusRecord) msg;
-            log.info ( "ShowMasterStatus:"+greetingPacket.toString () );
+            ShowMasterStatusRecord showMasterStatusRecord = (ShowMasterStatusRecord) msg;
+            log.info ( "ShowMasterStatus:"+showMasterStatusRecord.toString () );
     
-           
-    
-//            ctx.channel ().writeAndFlush ( authenticateCommand.toByteBuf () );
             ctx.pipeline ().remove ( this );
     
             FetchBinlogChecksumCommand checksumCommand = new FetchBinlogChecksumCommand ();

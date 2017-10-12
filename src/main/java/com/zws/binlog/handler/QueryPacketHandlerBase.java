@@ -6,8 +6,6 @@ import com.zws.binlog.network.RowPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
  * Created by zhangwusheng on 17/10/10.
  */
 public class QueryPacketHandlerBase extends ByteToMessageDecoder {
-    
-    private Logger log = LoggerFactory.getLogger ( QueryPacketHandlerBase.class );
     
     protected enum State
     {
@@ -52,8 +48,6 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
     
     protected void decode ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
     
-//        String debug = ByteBufUtil.prettyHexDump ( msg );
-//        log.info ( debug );
         decode0(ctx, msg, out );
         
         if(  currentState == State.FINISH ){
@@ -84,25 +78,19 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
             }
         }
     
-//        String debug = ByteBufUtil.prettyHexDump ( msg );
-//        log.info ( debug );
-        
         if( currentState == State.COLUMNS_COUNT ){
             columnCount = ByteUtil.readInteger ( msg,1 );
             currentState = State.COLUMNS_NAMES;
         }else if( currentState == State.COLUMNS_NAMES){
             
             int dataStartIndex = msg.readerIndex ();
-//            System.out.println ( "----------"+msg.getByte ( dataStartIndex ) );
             if(msg.getByte ( dataStartIndex ) == (byte)0xFE){
-                
                 currentState = State.ROWS_VALUES;
                 msg.skipBytes ( packetLength );
             } else {
                 ColumnDefinitionPacket columnDefinitionPacket = new ColumnDefinitionPacket ();
                 columnDefinitionPacket.parse ( msg );
                 this.columnDefinitionPacketList.add ( columnDefinitionPacket );
-//                log.info ( columnDefinitionPacket.toString () );
             }
         }else if( currentState == State.ROWS_VALUES){
             int dataStartIndex = msg.readerIndex ();
@@ -112,13 +100,9 @@ public class QueryPacketHandlerBase extends ByteToMessageDecoder {
             }
             else {
                 RowPacket rowPacket = new RowPacket ();
-                
                 ByteBuf rowmsg = msg.readSlice ( packetLength );
-                
                 rowPacket.parse ( rowmsg );
-        
                 this.rowPacketList.add ( rowPacket );
-//                log.info ( rowPacket.toString () );
             }
         }
     }

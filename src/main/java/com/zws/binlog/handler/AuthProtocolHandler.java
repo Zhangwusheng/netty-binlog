@@ -19,10 +19,10 @@ public class AuthProtocolHandler extends ByteToMessageDecoder {
     
     @Override
     protected void decode ( ChannelHandlerContext ctx, ByteBuf in, List< Object > out ) throws Exception {
-        Object greetingPacket = decode ( ctx, in);
+        Object okPacket = decode ( ctx, in);
         
-        if( greetingPacket != null ){
-            out.add ( greetingPacket );
+        if( okPacket != null ){
+            out.add ( okPacket );
         }
     }
     
@@ -34,19 +34,16 @@ public class AuthProtocolHandler extends ByteToMessageDecoder {
         int packetLength = ByteUtil.readInteger ( buffer,3 );
         int sequence = ByteUtil.readInteger ( buffer,1 );
         
-//        log.info ( "packetLength="+packetLength+",sequence="+sequence );
         
         if( buffer.readableBytes () < packetLength){
             buffer.resetReaderIndex ();
             return null;
         }
     
-        OKPacket greetingPacket = new OKPacket ();
-        greetingPacket.parse ( buffer );
+        OKPacket okPacket = new OKPacket ();
+        okPacket.parse ( buffer );
     
-//        log.info ( greetingPacket.toString () );
-        
         ctx.pipeline ().remove ( this );
-        return greetingPacket;
+        return okPacket;
     }
 }

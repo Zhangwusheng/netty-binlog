@@ -1,9 +1,6 @@
 package com.zws.binlog.event;
 /**
- * 
- * @author zhiqiang.liu
- * @2016年1月1日
- *
+ * Created by zhangwusheng on 17/10/10.
  */
 public class EventHeaderV4 implements EventHeader{
 	// v1 (MySQL 3.23)

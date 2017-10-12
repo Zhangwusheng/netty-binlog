@@ -1,5 +1,8 @@
 # netty-binlog
 
-http://blog.csdn.net/wind520/article/details/43964821
+binlog parser netty version.
+just for fun.
+
+based on https://github.com/shyiko/mysql-binlog-connector-java
 
 

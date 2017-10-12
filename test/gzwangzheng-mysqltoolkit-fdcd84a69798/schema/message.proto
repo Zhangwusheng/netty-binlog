@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package mysqlstreamer;
+
+option java_package = "com.alex.mysqlstreamer";
+option java_outer_classname = "ProtoBufBinlogEvent";
+
+message BinlogEvent {
+	// header
+	EventHeader header = 1;
+	// GTID
+	string gtid = 2;
+	// query event
+	QueryEvent queryEvent = 3;
+	// write row event
+	RowEvent rowEvent = 4;
+}
+
+enum EventType {
+	UNKNOWN_EVENT = 0;
+	QUERY_EVENT = 1;
+	WRITE_ROW_EVENT = 2;
+	DELETE_ROW_EVENT = 3;
+	UPDATE_ROW_EVENT = 4;
+	XID_EVENT = 5;
+}
+
+message EventHeader {
+	int64  timestamp = 1;
+	EventType eventType = 2;
+	int64  serverId = 3;
+	int64  eventSize = 4;
+	string binlogFileName	= 5;
+	int64  binlogPosition = 6;
+}
+
+message QueryEvent {
+	int64 threadId = 1;
+	int64 executionTime = 2;
+	int32 errorCode = 3;
+	string database = 4;
+	string sql = 5;
+}
+
+message Record {
+	repeated Item items = 1;
+}
+
+message Item {
+	string name = 1;
+	string type = 2;
+	string value = 3;
+}
+
+message PrimaryKey {
+	string name = 1;
+	int32 position = 2;
+}
+
+message RowEvent {
+	string tableName = 1;
+	repeated Record before = 2;
+	repeated Record after = 3;
+	repeated PrimaryKey primaryKey = 4;
+}

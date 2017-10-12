@@ -63,7 +63,7 @@ log-error                      = /usr/local/mysql/data/mysql-error.log
 log-queries-not-using-indexes  = 1
 slow-query-log                 = 1
 slow-query-log-file            = /usr/local/mysql/data/mysql-slow.log
-log                            = /usr/local/mysql/mysql.log
+#log                            = /usr/local/mysql/mysql.log
 
 # MYSELF #
 log-slave-updates=1    
@@ -71,6 +71,7 @@ binlog_format=row
 gtid_mode=on                 #开启gtid模式
 enforce_gtid_consistency=on  #强制gtid一致性，开启后对于特定create table不被支持
 bind-address=0.0.0.0
+max_allowed_packet        = 1073741824
 
 server_id=143
 general_log=on

@@ -64,7 +64,7 @@ log-error                      = /web/data/mysql-5.6.31/mysql-error.log
 log-queries-not-using-indexes  = 1
 slow-query-log                 = 1
 slow-query-log-file            = /web/data/mysql-5.6.31/mysql-slow.log
-log                            = /usr/local/mysql/mysql.log
+#log                            = /usr/local/mysql/mysql.log
 
 # MYSELF #
 log-slave-updates=1    
@@ -72,7 +72,7 @@ binlog_format=row
 gtid_mode=on                 #开启gtid模式
 enforce_gtid_consistency=on  #强制gtid一致性，开启后对于特定create table不被支持
 bind-address=0.0.0.0
-
+max_allowed_packet        = 1073741824
 
 relay_log_info_repository = TABLE
 master_info_repository    = TABLE

@@ -1,6 +1,6 @@
 package com.zws.binlog.handler;
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import com.zws.binlog.network.EofPacket;
 import com.zws.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;

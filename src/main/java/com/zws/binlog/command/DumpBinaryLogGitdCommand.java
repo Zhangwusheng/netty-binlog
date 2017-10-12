@@ -4,8 +4,8 @@ package com.zws.binlog.command;
  * Created by zhangwusheng on 17/10/10.
  */
 
-import com.zws.ByteUtil;
-import com.zws.binlog.GtidSet;
+import com.zws.binlog.util.ByteUtil;
+import com.zws.binlog.event.GtidSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 

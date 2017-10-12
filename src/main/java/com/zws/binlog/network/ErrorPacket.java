@@ -15,7 +15,7 @@
  */
 package com.zws.binlog.network;
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import io.netty.buffer.ByteBuf;
 
 /**

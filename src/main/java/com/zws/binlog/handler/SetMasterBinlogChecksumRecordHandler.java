@@ -1,15 +1,12 @@
 package com.zws.binlog.handler;
 
-import com.zws.binlog.GtidSet;
+import com.zws.binlog.event.GtidSet;
 import com.zws.binlog.command.DumpBinaryLogCommand;
 import com.zws.binlog.command.DumpBinaryLogGitdCommand;
 import com.zws.binlog.network.OKPacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

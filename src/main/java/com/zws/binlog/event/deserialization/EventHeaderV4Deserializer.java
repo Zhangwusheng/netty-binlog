@@ -1,6 +1,6 @@
 package com.zws.binlog.event.deserialization;
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import com.zws.binlog.event.EventHeaderV4;
 import com.zws.binlog.event.EventType;
 import io.netty.buffer.ByteBuf;

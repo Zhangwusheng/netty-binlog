@@ -15,7 +15,7 @@
  */
 package com.zws.binlog.event.deserialization.json;
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import com.zws.binlog.event.deserialization.AbstractRowsEventDataDeserializer;
 import com.zws.binlog.event.deserialization.ColumnType;
 import io.netty.buffer.ByteBuf;

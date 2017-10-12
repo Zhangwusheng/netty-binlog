@@ -4,7 +4,7 @@ package com.zws.binlog.command;
  * Created by zhangwusheng on 17/10/10.
  */
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 

@@ -1,6 +1,7 @@
 package com.zws.binlog.network;
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
+import com.zws.binlog.define.CharacterSetUtil;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,8 +15,8 @@
  */
 package com.zws.binlog.event.deserialization;
 
-import com.zws.ByteUtil;
-import com.zws.binlog.GtidSet;
+import com.zws.binlog.util.ByteUtil;
+import com.zws.binlog.event.GtidSet;
 import com.zws.binlog.event.data.PreviousGtidsData;
 import io.netty.buffer.ByteBuf;
 

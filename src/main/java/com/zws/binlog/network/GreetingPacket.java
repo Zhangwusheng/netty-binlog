@@ -124,7 +124,7 @@ package com.zws.binlog.network;
  @retval 1 error
  */
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

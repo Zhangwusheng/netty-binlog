@@ -16,7 +16,7 @@
 package com.zws.binlog.event.deserialization;
 
 
-import com.zws.ByteUtil;
+import com.zws.binlog.util.ByteUtil;
 import com.zws.binlog.event.data.IEventData;
 import com.zws.binlog.event.data.TableMapEventData;
 import io.netty.buffer.ByteBuf;

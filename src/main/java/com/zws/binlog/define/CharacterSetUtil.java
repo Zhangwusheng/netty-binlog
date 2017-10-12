@@ -1,4 +1,4 @@
-package com.zws.binlog.network;
+package com.zws.binlog.define;
 
 import java.util.HashMap;
 import java.util.Map;

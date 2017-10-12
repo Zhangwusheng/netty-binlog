@@ -1,4 +1,4 @@
-package com.zws;
+package com.zws.binlog.util;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;

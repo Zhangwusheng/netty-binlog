@@ -4,8 +4,8 @@ package com.zws.binlog.command;
  * Created by zhangwusheng on 17/10/10.
  */
 
-import com.zws.ByteUtil;
-import com.zws.binlog.network.ClientCapabilities;
+import com.zws.binlog.util.ByteUtil;
+import com.zws.binlog.define.ClientCapabilities;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.security.MessageDigest;

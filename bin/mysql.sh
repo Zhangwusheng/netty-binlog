@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 mkdir -p /data2/mysql-data/5.7.18
 
 #mv /usr/local/mysql /usr/local/mysql-5.7.18
@@ -55,3 +56,12 @@ tcpdump -i wlp3s0 -nn -X 'port 3333 and  host 192.168.1.105' -w mysql2.cap
 show binlog events in 'mysql-bin.000002';
 
 show variables like '%log%';
+
+
+
+#=================
+git pull
+git push origin master
+git tag v2017.10.12.00
+git push origin --tags
+git tag -l

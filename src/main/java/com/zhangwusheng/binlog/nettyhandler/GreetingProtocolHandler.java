@@ -1,7 +1,6 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.handler.GreetingPacketResultHandler;
 import com.zhangwusheng.binlog.network.GreetingPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class GreetingProtocolHandler extends ByteToMessageDecoder {
     
-    private Logger log = LoggerFactory.getLogger ( GreetingPacketResultHandler.class );
+    private Logger log = LoggerFactory.getLogger ( GreetingProtocolHandler.class );
     
     @Override
     protected void decode ( ChannelHandlerContext ctx, ByteBuf in, List< Object > out ) throws Exception {

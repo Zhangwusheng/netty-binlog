@@ -20,7 +20,6 @@ import com.zhangwusheng.binlog.event.data.TableMapEventData;
 import com.zhangwusheng.binlog.event.data.WriteRowsEventData;
 import io.netty.buffer.ByteBuf;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.BitSet;
 import java.util.LinkedList;

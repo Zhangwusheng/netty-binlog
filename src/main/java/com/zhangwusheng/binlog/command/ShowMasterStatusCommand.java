@@ -7,10 +7,6 @@ package com.zhangwusheng.binlog.command;
  *
  */
 
-import com.zhangwusheng.ByteUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-
 public class ShowMasterStatusCommand extends NettyQueryCommand {
 	
 //	private String sql = null;

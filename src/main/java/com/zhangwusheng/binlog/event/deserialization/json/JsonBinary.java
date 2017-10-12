@@ -15,9 +15,6 @@
  */
 package com.zhangwusheng.binlog.event.deserialization.json;
 
-//import com.github.shyiko.mysql.binlog.event.deserialization.AbstractRowsEventDataDeserializer;
-//import com.github.shyiko.mysql.binlog.event.deserialization.ColumnType;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.deserialization.AbstractRowsEventDataDeserializer;
 import com.zhangwusheng.binlog.event.deserialization.ColumnType;

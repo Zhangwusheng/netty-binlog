@@ -15,13 +15,9 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.IntVarEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.data.IntVarEventData;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
 
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>

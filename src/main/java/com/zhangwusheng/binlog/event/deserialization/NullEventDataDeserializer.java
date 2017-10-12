@@ -15,12 +15,7 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.GtidEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.event.data.GtidEventData;
 import com.zhangwusheng.binlog.event.data.NullEventData;
-import com.zhangwusheng.binlog.handler.BinlogEventHandler;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

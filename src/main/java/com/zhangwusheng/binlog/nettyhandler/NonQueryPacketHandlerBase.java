@@ -1,18 +1,14 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.network.ColumnDefinitionPacket;
 import com.zhangwusheng.binlog.network.EofPacket;
 import com.zhangwusheng.binlog.network.OKPacket;
-import com.zhangwusheng.binlog.network.RowPacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

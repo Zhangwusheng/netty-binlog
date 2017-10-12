@@ -4,7 +4,6 @@ import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.network.ColumnDefinitionPacket;
 import com.zhangwusheng.binlog.network.RowPacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.slf4j.Logger;

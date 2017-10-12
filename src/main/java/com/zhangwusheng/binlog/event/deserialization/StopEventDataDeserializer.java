@@ -15,11 +15,6 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.GtidEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.GtidSet;
-import com.zhangwusheng.binlog.event.data.PreviousGtidsData;
 import com.zhangwusheng.binlog.event.data.StopEventData;
 import io.netty.buffer.ByteBuf;
 

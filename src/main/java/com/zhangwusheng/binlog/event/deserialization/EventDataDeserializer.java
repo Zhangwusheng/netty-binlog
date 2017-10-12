@@ -15,13 +15,8 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.EventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
 import com.zhangwusheng.binlog.event.EventData;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
 
 /**
  * @param <T> event data this deserializer is responsible for

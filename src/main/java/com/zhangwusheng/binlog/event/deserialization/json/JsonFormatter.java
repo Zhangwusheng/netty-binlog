@@ -15,10 +15,7 @@
  */
 package com.zhangwusheng.binlog.event.deserialization.json;
 
-//import com.github.shyiko.mysql.binlog.event.deserialization.ColumnType;
-
 import com.zhangwusheng.binlog.event.deserialization.ColumnType;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 

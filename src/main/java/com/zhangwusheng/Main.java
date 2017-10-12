@@ -3,7 +3,6 @@ package com.zhangwusheng;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import com.zhangwusheng.binlog.handler.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
@@ -41,13 +40,13 @@ public class Main {
                     .handler( new ChannelInitializer<SocketChannel>(){
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline channelPipeline = ch.pipeline();
-                            channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler () );
-                            channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
-                            channelPipeline.addLast ( "AuthenticateResultHandler",new AuthenticateResultHandler () );
-                            channelPipeline.addLast ( "ShowMasterStatusHandler",new ShowMasterStatusHandler () );
-                            channelPipeline.addLast ( "FetchBinlogChecksumHandler",new FetchBinlogChecksumHandler () );
-                            channelPipeline.addLast ( "SetMasterChecksumHandler",new SetMasterBinlogChecksumHandler () );
-                            channelPipeline.addLast ( "BinlogEventHandler",new BinlogEventHandler () );
+//                            channelPipeline.addLast ( "MysqlProtoclHeaderHandler",new MysqlProtoclHeaderHandler () );
+//                            channelPipeline.addLast ( "GreetingPacketResultHandler",new GreetingPacketResultHandler () );
+//                            channelPipeline.addLast ( "AuthenticateResultHandler",new AuthenticateResultHandler () );
+//                            channelPipeline.addLast ( "ShowMasterStatusHandler",new ShowMasterStatusHandler () );
+//                            channelPipeline.addLast ( "FetchBinlogChecksumHandler",new FetchBinlogChecksumHandler () );
+//                            channelPipeline.addLast ( "SetMasterChecksumHandler",new SetMasterBinlogChecksumHandler () );
+//                            channelPipeline.addLast ( "BinlogEventHandler",new BinlogEventHandler () );
                         }
                     });
             

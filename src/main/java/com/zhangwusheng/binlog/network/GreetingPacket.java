@@ -125,10 +125,7 @@ package com.zhangwusheng.binlog.network;
  */
 
 import com.zhangwusheng.ByteUtil;
-//import com.zhangwusheng.HandlerUtil;
 import io.netty.buffer.ByteBuf;
-//import io.netty.channel.ChannelHandlerContext;
-//import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

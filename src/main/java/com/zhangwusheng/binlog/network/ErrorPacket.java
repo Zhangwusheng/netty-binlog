@@ -15,11 +15,8 @@
  */
 package com.zhangwusheng.binlog.network;
 
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
 import com.zhangwusheng.ByteUtil;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
 
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>

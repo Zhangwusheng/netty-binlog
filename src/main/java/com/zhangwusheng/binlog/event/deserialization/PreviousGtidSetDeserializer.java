@@ -15,11 +15,9 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.data.PreviousGtidSetEventData;
 import io.netty.buffer.ByteBuf;
-
 
 import static java.lang.String.format;
 

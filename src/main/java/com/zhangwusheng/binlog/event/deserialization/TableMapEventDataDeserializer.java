@@ -15,14 +15,10 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.TableMapEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.data.TableMapEventData;
 import io.netty.buffer.ByteBuf;
 
-import java.io.IOException;
 import java.util.BitSet;
 
 /**

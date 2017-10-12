@@ -13,8 +13,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 public class DumpBinaryLogGitdCommand implements Command {
 	private long serverId;

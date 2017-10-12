@@ -1,8 +1,6 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
 import com.zhangwusheng.binlog.command.FetchBinlogChecksumCommand;
-import com.zhangwusheng.binlog.command.NettyAuthenticateCommand;
-import com.zhangwusheng.binlog.network.GreetingPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.slf4j.Logger;

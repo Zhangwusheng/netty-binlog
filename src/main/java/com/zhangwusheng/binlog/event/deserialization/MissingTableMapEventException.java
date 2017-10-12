@@ -15,8 +15,6 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import java.io.IOException;
-
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */

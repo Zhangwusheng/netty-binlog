@@ -5,8 +5,6 @@ import com.zhangwusheng.binlog.event.EventHeaderV4;
 import com.zhangwusheng.binlog.event.EventType;
 import io.netty.buffer.ByteBuf;
 
-//import java.io.IOException;
-
 /**
  * Created by zhangwusheng on 17/10/11.
  */

@@ -21,7 +21,6 @@ import com.zhangwusheng.binlog.event.EventData;
 import com.zhangwusheng.binlog.event.data.TableMapEventData;
 import io.netty.buffer.ByteBuf;
 
-//import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.BitSet;

@@ -15,12 +15,9 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.data.RowsQueryEventData;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
 
 /**
  * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>

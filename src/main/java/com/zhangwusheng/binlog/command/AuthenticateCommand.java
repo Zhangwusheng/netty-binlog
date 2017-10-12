@@ -15,12 +15,7 @@
  */
 package com.zhangwusheng.binlog.command;
 
-//import com.github.shyiko.mysql.binlog.io.ByteArrayOutputStream;
-//import com.github.shyiko.mysql.binlog.network.ClientCapabilities;
-
-//import java.io.IOException;
 import io.netty.buffer.ByteBuf;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,14 +23,14 @@ import java.security.NoSuchAlgorithmException;
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>
  */
 public class AuthenticateCommand implements Command {
-
+    
     private String schema;
     private String username;
     private String password;
     private String salt;
     private int clientCapabilities;
     private int collation;
-
+    
     public AuthenticateCommand ( String schema, String username, String password, String salt) {
         this.schema = schema;
         this.username = username;
@@ -51,12 +46,12 @@ public class AuthenticateCommand implements Command {
     public void setClientCapabilities( int clientCapabilities) {
         this.clientCapabilities = clientCapabilities;
     }
-
+    
     public void setCollation(int collation) {
         this.collation = collation;
     }
-
-//    @Override
+    
+    //    @Override
     public byte[] toByteArray()  {
         
         return null;
@@ -84,7 +79,7 @@ public class AuthenticateCommand implements Command {
 //        }
 //        return buffer.toByteArray();
     }
-
+    
     /**
      * see mysql/sql/password.c scramble(...)
      */
@@ -98,14 +93,14 @@ public class AuthenticateCommand implements Command {
         byte[] passwordHash = sha.digest(password.getBytes());
         return xor(passwordHash, sha.digest(union(salt.getBytes(), sha.digest(passwordHash))));
     }
-
+    
     private static byte[] union(byte[] a, byte[] b) {
         byte[] r = new byte[a.length + b.length];
         System.arraycopy(a, 0, r, 0, a.length);
         System.arraycopy(b, 0, r, a.length, b.length);
         return r;
     }
-
+    
     private static byte[] xor(byte[] a, byte[] b) {
         byte[] r = new byte[a.length];
         for (int i = 0; i < r.length; i++) {
@@ -113,5 +108,5 @@ public class AuthenticateCommand implements Command {
         }
         return r;
     }
-
+    
 }

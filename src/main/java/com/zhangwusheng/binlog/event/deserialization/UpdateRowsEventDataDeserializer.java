@@ -15,11 +15,6 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.TableMapEventData;
-//import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
-//import java.io.IOException;
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.data.TableMapEventData;
 import com.zhangwusheng.binlog.event.data.UpdateRowsEventData;
@@ -27,6 +22,8 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.Serializable;
 import java.util.*;
+
+//
 
 /**
  * @author <a href="mailto:stanley.shyiko@gmail.com">Stanley Shyiko</a>

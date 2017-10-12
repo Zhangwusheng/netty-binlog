@@ -15,14 +15,9 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.XAPrepareEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
-
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.event.data.XAPrepareEventData;
 import io.netty.buffer.ByteBuf;
-
-//import java.io.IOException;
 
 /**
  * https://github.com/mysql/mysql-server/blob/5.7/libbinlogevents/src/control_events.cpp#L590

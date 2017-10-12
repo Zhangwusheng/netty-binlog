@@ -15,16 +15,10 @@
  */
 package com.zhangwusheng.binlog.event.deserialization;
 
-//import com.github.shyiko.mysql.binlog.event.GtidEventData;
-//import com.github.shyiko.mysql.binlog.io.ByteArrayInputStream;
 import com.zhangwusheng.ByteUtil;
 import com.zhangwusheng.binlog.GtidSet;
-import com.zhangwusheng.binlog.event.data.GtidEventData;
 import com.zhangwusheng.binlog.event.data.PreviousGtidsData;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author <a href="mailto:pprasse@actindo.de">Patrick Prasse</a>

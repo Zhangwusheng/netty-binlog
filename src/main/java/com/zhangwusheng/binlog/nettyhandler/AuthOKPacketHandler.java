@@ -1,8 +1,6 @@
 package com.zhangwusheng.binlog.nettyhandler;
 
-import com.zhangwusheng.binlog.command.NettyAuthenticateCommand;
 import com.zhangwusheng.binlog.command.ShowMasterStatusCommand;
-import com.zhangwusheng.binlog.network.GreetingPacket;
 import com.zhangwusheng.binlog.network.OKPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;

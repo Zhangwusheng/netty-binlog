@@ -1,7 +1,6 @@
 package com.zhangwusheng.binlog.network;
 
 import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.handler.ShowMasterStatusHandler;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ColumnDefinitionPacket implements Packet {
     
-    private Logger log = LoggerFactory.getLogger ( ShowMasterStatusHandler.class );
+    private Logger log = LoggerFactory.getLogger ( ColumnDefinitionPacket.class );
     
     //可以用wireshark，对包进行解析。wireshark支持mysql协议
 //    Catalog: def

@@ -1,10 +1,10 @@
 package com.zhangwusheng.binlog.event.deserialization;
 
-import com.zhangwusheng.ByteUtil;
-import com.zhangwusheng.binlog.event.*;
-//import com.zhangwusheng.binlog.event.data.NullEventData;
+import com.zhangwusheng.binlog.event.Event;
+import com.zhangwusheng.binlog.event.EventData;
+import com.zhangwusheng.binlog.event.EventHeaderV4;
+import com.zhangwusheng.binlog.event.EventType;
 import com.zhangwusheng.binlog.event.data.TableMapEventData;
-import com.zhangwusheng.binlog.handler.AuthenticateResultHandler;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

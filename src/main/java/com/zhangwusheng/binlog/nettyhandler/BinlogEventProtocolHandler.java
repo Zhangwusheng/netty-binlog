@@ -6,7 +6,6 @@ import com.zhangwusheng.binlog.event.EventHeaderV4;
 import com.zhangwusheng.binlog.event.EventType;
 import com.zhangwusheng.binlog.event.deserialization.EventDeserializer;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.slf4j.Logger;

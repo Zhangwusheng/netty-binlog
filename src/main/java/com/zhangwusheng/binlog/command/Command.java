@@ -15,10 +15,6 @@
  */
 package com.zhangwusheng.binlog.command;
 
-//import com.github.shyiko.mysql.binlog.network.protocol.Packet;
-//
-//import java.io.IOException;
-
 import io.netty.buffer.ByteBuf;
 
 /**

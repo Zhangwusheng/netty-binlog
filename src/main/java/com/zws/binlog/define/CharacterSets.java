@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by zhangwusheng on 17/10/6.
  */
-public class CharacterSetUtil {
+public class CharacterSets {
     private static Map<Integer,String> mapId2String = new HashMap<Integer,String> (  );
     
     static{

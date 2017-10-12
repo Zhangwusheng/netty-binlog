@@ -1,7 +1,7 @@
 package com.zws.binlog.network;
 
 import com.zws.binlog.util.ByteUtil;
-import com.zws.binlog.define.CharacterSetUtil;
+import com.zws.binlog.define.CharacterSets;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +103,7 @@ public class ColumnDefinitionPacket implements Packet {
                     ", name='" + name + '\'' +
                     ", originalName='" + originalName + '\'' +
                     ", nextLength=" + nextLength +
-                    ", characterSet=" + CharacterSetUtil.getCharacterSetStringById ( characterSet ) +
+                    ", characterSet=" + CharacterSets.getCharacterSetStringById ( characterSet ) +
                     ", maxColumnLength=" + maxColumnLength +
                     ", columnType=" + columnType +
                     ", flags=" + flags +

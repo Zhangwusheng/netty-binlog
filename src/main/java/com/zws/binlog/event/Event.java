@@ -15,6 +15,8 @@
  */
 package com.zws.binlog.event;
 
+import com.zws.binlog.event.data.EventData;
+
 import java.io.Serializable;
 
 /**

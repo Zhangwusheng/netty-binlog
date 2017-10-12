@@ -1,7 +1,7 @@
 package com.zws.binlog.event.deserialization;
 
 import com.zws.binlog.event.Event;
-import com.zws.binlog.event.EventData;
+import com.zws.binlog.event.data.EventData;
 import com.zws.binlog.event.EventHeaderV4;
 import com.zws.binlog.event.EventType;
 import com.zws.binlog.event.data.TableMapEventData;

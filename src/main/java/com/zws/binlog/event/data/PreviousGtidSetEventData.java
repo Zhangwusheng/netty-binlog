@@ -15,8 +15,6 @@
  */
 package com.zws.binlog.event.data;
 
-import com.zws.binlog.event.EventData;
-
 /**
  * @author <a href="https://github.com/jolivares">Juan Olivares</a>
  */

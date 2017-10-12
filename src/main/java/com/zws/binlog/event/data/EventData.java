@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zws.binlog.event;
+package com.zws.binlog.event.data;
 
 import java.io.Serializable;
 

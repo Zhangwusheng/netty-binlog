@@ -15,8 +15,6 @@
  */
 package com.zws.binlog.event.data;
 
-import com.zws.binlog.event.EventData;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.BitSet;

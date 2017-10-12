@@ -30,7 +30,7 @@ public class WriteRowsEventData implements EventData {
     private long tableId;
     private BitSet includedColumns;
     /**
-     * @see com.github.shyiko.mysql.binlog.event.deserialization.AbstractRowsEventDataDeserializer
+     * @see com.zhangwusheng.binlog.event.deserialization.AbstractRowsEventDataDeserializer
      */
     private List<Serializable[]> rows;
 

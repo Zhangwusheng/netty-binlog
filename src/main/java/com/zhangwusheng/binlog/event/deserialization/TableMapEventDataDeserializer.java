@@ -60,6 +60,7 @@ public class TableMapEventDataDeserializer implements EventDataDeserializer<Tabl
 
         eventData.setColumnMetadata(readMetadata(inputStream, eventData.getColumnTypes()));
         BitSet bitSet = ByteUtil.readBitSet(inputStream,numberOfColumns,true);
+        eventData.setColumnNullability ( bitSet );
 //        eventData.setColumnNullability(inputStream.readBitSet(numberOfColumns, true));
 
 
@@ -77,13 +78,13 @@ public class TableMapEventDataDeserializer implements EventDataDeserializer<Tabl
                 case JSON:
                 case GEOMETRY:
 //                    metadata[i] = inputStream.readInteger(1);
-                    metadata[i] = ByteUtil.readInteger(inputStream,1);
+                    metadata[i] = ByteUtil.readUnsignedInt (inputStream,1);
                     break;
                 case BIT:
                 case VARCHAR:
                 case NEWDECIMAL:
 //                    metadata[i] = inputStream.readInteger(2);
-                    metadata[i] = ByteUtil.readInteger(inputStream,1);
+                    metadata[i] = ByteUtil.readUnsignedInt(inputStream,2);
                     break;
                 case SET:
                 case ENUM:
@@ -97,7 +98,7 @@ public class TableMapEventDataDeserializer implements EventDataDeserializer<Tabl
                 case DATETIME_V2:
                 case TIMESTAMP_V2:
 //                    metadata[i] = inputStream.readInteger(1); // fsp (@see {@link ColumnType})
-                    metadata[i] = ByteUtil.readInteger(inputStream,1);
+                    metadata[i] = ByteUtil.readUnsignedInt(inputStream,1);
                     break;
                 default:
                     metadata[i] = 0;

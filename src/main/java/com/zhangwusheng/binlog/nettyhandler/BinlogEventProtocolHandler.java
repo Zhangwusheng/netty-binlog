@@ -52,7 +52,8 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
     int sequence;
     EventHeaderV4 header;
     Event event = null;
-    
+    EventDeserializer deserializer = new EventDeserializer ();
+
 //    protected void decode0 ( ChannelHandlerContext ctx, ByteBuf msg, List< Object > out ) throws Exception {
 //
 //        if ( currentState == State.BEGIN ) {
@@ -118,7 +119,6 @@ public class BinlogEventProtocolHandler extends ByteToMessageDecoder {
     
         ByteUtil.prettyPrint ( dataBuffer,log );
     
-        EventDeserializer deserializer = new EventDeserializer ();
         
         int marker = ByteUtil.readUnsignedInt ( dataBuffer, 1 );
     

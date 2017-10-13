@@ -65,3 +65,9 @@ git push origin master
 git tag v2017.10.12.00
 git push origin --tags
 git tag -l
+
+local:
+git init
+git remote add origin https://github.com/Zhangwusheng/hello-clj.git
+git push -u origin master
+

@@ -22,13 +22,9 @@ public class OKPacket implements Packet {
     //“OK with CLIENT_PROTOCOL_41. 0 affected rows, last-insert-id was 0,
     // AUTOCOMMIT enabled, 0 warnings. No further info.”
     //摘录来自: Oracle. “MySQL Internals Manual”。 iBooks.
-    
     //    “These rules distinguish whether the packet represents OK or EOF:
-    //
     //    OK: header = 0 and length of packet > 7
-    //
     //    EOF: header = 0xfe and length of packet < 9
-    //
     //    摘录来自: Oracle. “MySQL Internals Manual”。 iBooks.
     
     

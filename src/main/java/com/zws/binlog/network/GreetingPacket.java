@@ -97,13 +97,13 @@ package com.zws.binlog.network;
  * Returns
  * Protocol::HandshakeResponse320”
  *
- 
+
  mysql-5.7.17/sql/auth/sql_authentication.cc:527 send_server_handshake_packet的实现：
  sends a server handshake initialization packet, the very first packet
  after the connection was established
- 
+
  Packet format:
- 
+
  Bytes       Content
  -----       ----
  1           protocol version (always 10)
@@ -119,7 +119,7 @@ package com.zws.binlog.network;
  *10          reserved, always 0 上述3列是被下面代码skip的13个
  n           rest of the plugin provided data (at least 12 bytes)
  1           \0 byte, terminating the second part of a scramble
- 
+
  @retval 0 ok
  @retval 1 error
  */
@@ -131,9 +131,9 @@ import org.slf4j.LoggerFactory;
 
 public class GreetingPacket  implements Packet {
 	private Logger log = LoggerFactory.getLogger ( GreetingPacket.class );
-	
+
 	public static int CLIENT_PLUGIN_AUTH  = 1 << 19;
-	
+
 	int protocolVersion;
 	String serverVersion;
 	long connectionId;
@@ -142,98 +142,46 @@ public class GreetingPacket  implements Packet {
 	int serverCollation;
 	int serverStatus;
 	String scrambleSuffix;
-	
-	
-	
 	String scramble;
 	String pluginData;
-	
+
 	public GreetingPacket(){
-		
+
 	}
-	
+
 	public void parse ( ByteBuf msg ) {
-//		log.info ( "msg.readableBytes="+msg.readableBytes () );
-		
 		protocolVersion = ByteUtil.readUnsignedByte(msg);// 一个字节
-//		log.info("mysql protocol version: " + protocolVersion);
-		
 		serverVersion = ByteUtil.readZeroTerminatedString(msg);
-//		log.info("serverVersion:" + serverVersion);
-		
 		connectionId = ByteUtil.readUnsignedLong(msg, 4);
-//		log.info("threadId: " + connectionId);
-		
 		//这里能读对，是因为8个字节后面正好是filler \0
 		scramblePrefix = ByteUtil.readZeroTerminatedString(msg);
-//		log.info("scramblePrefix: " + scramblePrefix);
-		
 		serverCapabilities = ByteUtil.readUnsignedInt(msg, 2);
-//		log.info( "serverCapabilities:" + serverCapabilities);
-		
 		serverCollation = ByteUtil.readUnsignedByte(msg);
-//		log.info("serverCollation: " + serverCollation);
-		
-		 serverStatus = ByteUtil.readUnsignedInt(msg, 2);
-//		log.info("serverStatus: " + serverStatus);
-		
+		serverStatus = ByteUtil.readUnsignedInt(msg, 2);
 		msg.skipBytes(13);
 
-//			这里是对跳过的13个字节的解析
-//			int serverCapabilitiesUpper = ByteUtil.readUnsignedInt(msg, 2);
-//			log.info("serverCapabilitiesUpper="+serverCapabilitiesUpper);
-//			n = serverCapabilitiesUpper & ( CLIENT_PLUGIN_AUTH >> 16 );
-//			System.out.println ( "CLIENT_PLUGIN_AUTH Enabled:"+n );
-//			int lengthOfAuthPluginataD=0;
-//			if( n > 0 ){
-//				lengthOfAuthPluginataD= ByteUtil.readUnsignedInt(msg, 1);
-//				System.out.println ("lengthOfAuthPluginataD="+lengthOfAuthPluginataD );
-//			}else{
-//				msg.skipBytes(1);
-//			}
-//
-//			msg.skipBytes(10);
-
-//			capabilities & CLIENT_SECURE_CONNECTION=TRUE;
-//			这里不应该是readZeroTerminatedString
-//			而应该是string[$len]($len=MAX(13, length of auth-plugin-data - 8))
-//			但是这里多了最后一个\0，应该去掉
-//			int len = Math.max ( 13, lengthOfAuthPluginataD-8);
-//			String scrambleSuffix = ByteUtil.readString (msg,len);
-//			log.info ( "scramblePrefix: " + scramblePrefix );
-//			log.info ( "scrambleSuffix: " + scrambleSuffix );
-//			String scramble = scramblePrefix + scrambleSuffix;
-//			log.info ( "scramble: " + scramble );
-		
-		
 		scrambleSuffix = ByteUtil.readZeroTerminatedString(msg);
 		scramble = scramblePrefix + scrambleSuffix;
-//		log.info ( "scramble: " + scramble );
-		
+
 		if( msg.readableBytes () > 0 ){
 			// serverCapabilities & ( CLIENT_PLUGIN_AUTH 这里是为true的
 			//一般是"mysql_native_password"
 			pluginData = ByteUtil.readZeroTerminatedString ( msg );
-//			log.info ("pluginData="+pluginData  );
 		}
 	}
-	
+
 	public int getServerCollation ( ) {
 		return serverCollation;
 	}
-	
-//	public void setServerCollation ( int serverCollation ) {
-//		this.serverCollation = serverCollation;
-//	}
-	
+
 	public String getScramble ( ) {
 		return scramble;
 	}
-	
+
 	public void setScramble ( String scramble ) {
 		this.scramble = scramble;
 	}
-	
+
 	@Override
 	public String toString ( ) {
 		return "GreetingPacket{" +

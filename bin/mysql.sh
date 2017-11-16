@@ -76,3 +76,8 @@ git reset --hard 3628164
 
 git reflog
 
+
+git init
+git remote add origin https://github.com/Zhangwusheng/hello-clj.git
+git push -u origin master
+

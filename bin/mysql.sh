@@ -65,3 +65,14 @@ git push origin master
 git tag v2017.10.12.00
 git push origin --tags
 git tag -l
+
+
+git log --pretty=oneline
+git reset --hard HEAD^
+git reset --hard HEAD^^
+git reset --hard HEAD~12
+
+git reset --hard 3628164
+
+git reflog
+

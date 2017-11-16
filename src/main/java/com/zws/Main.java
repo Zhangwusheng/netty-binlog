@@ -14,6 +14,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.ApplicationHome;
+import org.springframework.boot.ApplicationPid;
+import org.springframework.boot.ApplicationTemp;
 
 /**
  * Created by zws on 9/29/17.
@@ -67,6 +70,26 @@ public class Main {
     }
     
     public static void main(String[] args) {
+        
+        ApplicationHome applicationHome = new ApplicationHome();
+        System.out.println ("1:"+applicationHome.toString () );
+        System.out.println ("3："+applicationHome.getDir ().toString () );
+//        System.out.println ( "2:"+applicationHome.getSource ().toString () );
+    
+        ApplicationPid applicationId = new  ApplicationPid();
+        System.out.println ( applicationId.toString () );
+    
+        ApplicationTemp applicationTemp = new ApplicationTemp();
+        System.out.println (applicationTemp.getDir ().toString () );
+    
+        try {
+            Thread.sleep ( 10000 );
+        }
+        catch ( InterruptedException e ) {
+            e.printStackTrace ( );
+        }
+    
+        System.exit ( 1 );
     
         ByteBuf byteBuf = Unpooled.buffer ( 10 );
         byteBuf.writeBytes ( "Zhangwusheng".getBytes () );
@@ -85,7 +108,7 @@ public class Main {
         debug = ByteBufUtil.prettyHexDump ( compositeByteBuf );
         System.out.println (debug );
         
-//        System.exit ( 0 );
+        System.exit ( 0 );
  
         
         String CDC_HOME_PROPERTY = "cdc.home.dir";
